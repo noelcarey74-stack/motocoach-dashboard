@@ -5,30 +5,148 @@
   <title>MotoCoach – Support</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
-    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    h2 { margin-top: 1.5rem; }
+    /* same styles again */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: linear-gradient(180deg, #e3f0ff, #f5f7fb);
+      color: #111827;
+    }
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #111827;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      background: transparent;
+    }
+    .nav-links a.active {
+      background: #f97316;
+      border-color: #f97316;
+      color: #111827;
+      font-weight: 600;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
+    }
+    .card {
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 24px 20px 32px;
+      box-shadow: 0 10px 35px rgba(15,23,42,0.18);
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 4px;
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+    p {
+      line-height: 1.5;
+      margin: 6px 0 10px;
+    }
+    ul {
+      margin-top: 4px;
+      margin-bottom: 10px;
+      padding-left: 22px;
+    }
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 8px 0 16px;
+    }
   </style>
 </head>
 <body>
-  <h1>MotoCoach – Support</h1>
-  <p>
-    If you have any questions about the MotoCoach app, billing, or technical
-    issues, please contact us by email:
-  </p>
-  <p><strong>Email:</strong> <a href="mailto:motocoachapp@gmail.com">motocoachapp@gmail.com</a></p>
+  <div class="page-wrapper">
+    <header>
+      <div class="header-title">MotoCoach – Track Day Coaching App</div>
+      <nav class="nav-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="support.html" class="active">Support</a>
+      </nav>
+    </header>
 
-  <h2>Response time</h2>
-  <p>
-    We aim to reply to all support requests within 2 business days.
-  </p>
+    <main>
+      <div class="card">
+        <h1>Support</h1>
+        <p class="muted">If you have any questions or problems with MotoCoach, we’re here to help.</p>
 
-  <h2>Refunds & subscriptions</h2>
-  <p>
-    MotoCoach subscriptions are managed by Apple through your Apple ID.
-    For refunds or billing issues, please use Apple’s support and
-    <em>Report a Problem</em> page. We can help with app-related questions and
-    guidance, but we cannot change or cancel subscriptions directly.
-  </p>
+        <h2>Contact us</h2>
+        <p>
+          The quickest way to reach us is by email:
+          <a href="mailto:motocoachapp@gmail.com">motocoachapp@gmail.com</a>
+        </p>
+        <ul>
+          <li>Your Apple ID email (optional – if it’s different from the one you’re emailing from)</li>
+          <li>Which iPhone you’re using and iOS version (if you know it)</li>
+          <li>A short description of what happened</li>
+          <li>Screenshots if something looks wrong in the app</li>
+        </ul>
+
+        <h2>Refunds &amp; billing issues</h2>
+        <p>
+          All payments and subscriptions are managed by Apple.
+          For refunds or billing questions, please use Apple’s
+          <strong>Report a Problem</strong> website:
+          <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">
+            https://reportaproblem.apple.com
+          </a>
+        </p>
+
+        <h2>Bug reports &amp; feature requests</h2>
+        <p>
+          If you spot a bug or have an idea that would make MotoCoach more useful for track days,
+          send us a message and include as much detail as you can. We read everything.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      © 2025 MotoCoach. All rights reserved.
+    </footer>
+  </div>
 </body>
 </html>
