@@ -5,46 +5,151 @@
   <title>MotoCoach – Terms of Use</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
-    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    h2 { margin-top: 1.5rem; }
+    /* same styles as privacy.html */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: linear-gradient(180deg, #e3f0ff, #f5f7fb);
+      color: #111827;
+    }
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #111827;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      background: transparent;
+    }
+    .nav-links a.active {
+      background: #f97316;
+      border-color: #f97316;
+      color: #111827;
+      font-weight: 600;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
+    }
+    .card {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 24px 20px 32px;
+      box-shadow: 0 10px 35px rgba(15,23,42,0.18);
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 4px;
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+    p {
+      line-height: 1.5;
+      margin: 6px 0 10px;
+    }
+    ul {
+      margin-top: 4px;
+      margin-bottom: 10px;
+      padding-left: 22px;
+    }
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 8px 0 16px;
+    }
   </style>
 </head>
 <body>
-  <h1>MotoCoach – Terms of Use</h1>
-  <p><strong>Last updated:</strong> 22 November 2025</p>
+  <div class="page-wrapper">
+    <header>
+      <div class="header-title">MotoCoach – Track Day Coaching App</div>
+      <nav class="nav-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html" class="active">Terms of Use</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </header>
 
-  <h2>1. Overview</h2>
-  <p>
-    MotoCoach is an educational tool that provides coaching suggestions for
-    closed-circuit motorcycle track days. It does not replace professional
-    instruction or your own judgement as a rider.
-  </p>
+    <main>
+      <div class="card">
+        <h1>Terms of Use</h1>
+        <p class="muted">Last updated: 22 November 2025</p>
 
-  <h2>2. Safety</h2>
-  <ul>
-    <li>You are responsible for riding within your own limits and obeying all rules of the track.</li>
-    <li>Advice in the app is general guidance only and may not be suitable for every rider or situation.</li>
-    <li>MotoCoach is not intended for use on public roads.</li>
-  </ul>
+        <h2>1. Overview</h2>
+        <p>
+          MotoCoach is an educational tool that provides coaching suggestions for closed-circuit motorcycle track days.
+          It does not replace professional instruction or your own judgement as a rider.
+        </p>
 
-  <h2>3. Subscriptions</h2>
-  <p>
-    Access to premium features is provided through an auto-renewing subscription
-    managed by Apple via your Apple ID. You can cancel or change your
-    subscription at any time in your Apple ID settings.
-  </p>
+        <h2>2. Safety</h2>
+        <ul>
+          <li>You are responsible for riding within your own limits and within the rules of the track day organiser.</li>
+          <li>Advice in the app is general guidance only and may not suit every rider or bike.</li>
+          <li>MotoCoach is not intended for use on public roads.</li>
+        </ul>
 
-  <h2>4. No guarantee of performance</h2>
-  <p>
-    We do not guarantee any specific improvement in lap times, riding skill, or
-    performance. Use the app as one of many tools in your learning.
-  </p>
+        <h2>3. Subscriptions</h2>
+        <p>
+          Access to premium features is provided through an auto-renewing subscription managed by Apple via your Apple ID.
+          You can cancel or change your subscription at any time in your Apple ID settings.
+        </p>
 
-  <h2>5. Contact</h2>
-  <p>
-    For questions about these terms, please email
-    <a href="mailto:motocoachapp@gmail.com">motocoachapp@gmail.com</a>.
-  </p>
+        <h2>4. No guarantee of performance</h2>
+        <p>
+          We do not guarantee any specific improvement in lap times, confidence, or performance.
+          Use the app as one of many tools in your rider development.
+        </p>
+
+        <h2>5. Contact</h2>
+        <p>
+          For questions about these terms, please email
+          <a href="mailto:motocoachapp@gmail.com">motocoachapp@gmail.com</a>.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      © 2025 MotoCoach. All rights reserved.
+    </footer>
+  </div>
 </body>
 </html>
