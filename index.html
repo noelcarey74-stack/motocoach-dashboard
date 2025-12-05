@@ -68,6 +68,7 @@
       justify-content: space-between;
       padding: 14px 0;
       gap: 18px;
+      flex-wrap: wrap; /* allow wrapping on smaller screens */
     }
 
     .nav-left {
@@ -547,18 +548,34 @@
       .hero-grid {
         grid-template-columns: minmax(0, 1fr);
       }
+
       .device-card {
         margin: 10px auto 0;
       }
-      .nav-links {
-        display: none;
-      }
+
       .nav {
         padding: 10px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
+
+      .nav-links {
+        display: flex;          /* keep links visible */
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 0.85rem;
+      }
+
+      .nav-cta {
+        width: 100%;
+        justify-content: space-between;
+      }
+
       section {
         padding: 42px 0;
       }
+
       .pricing-card {
         grid-template-columns: minmax(0, 1fr);
       }
@@ -868,11 +885,11 @@
       <div class="footer-row">
         <div>© 2025 AimotoCoach • MotoCoach Track Day Coaching App</div>
         <div class="footer-links">
-  <a href="privacy.html">Privacy Policy</a>
-  <a href="terms.html">Terms</a>
-  <a href="support.html">Support</a>
-  <a href="faq.html">FAQ</a>
-</div>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="support.html">Support</a>
+          <a href="faq.html">FAQ</a>
+        </div>
       </div>
     </div>
   </footer>
