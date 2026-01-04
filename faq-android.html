@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MotoCoach – FAQ (Android)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #e3f0ff, #f5f7fb);
+      color: #111827;
+    }
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #111827;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      background: transparent;
+    }
+    .nav-links a.active {
+      background: #f97316;
+      border-color: #f97316;
+      color: #111827;
+      font-weight: 700;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 40px;
+    }
+    .card {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 24px 20px 32px;
+      box-shadow: 0 10px 35px rgba(15,23,42,0.18);
+    }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    h2 { margin-top: 22px; margin-bottom: 8px; font-size: 18px; }
+    p { line-height: 1.55; margin: 6px 0 10px; }
+    ul { margin-top: 6px; margin-bottom: 10px; padding-left: 22px; }
+    .muted { color: #6b7280; font-size: 14px; margin-bottom: 16px; }
+    details {
+      background: #ffffff;
+      border-radius: 12px;
+      margin: 10px 0;
+      padding: 10px 14px;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.06);
+      border: 1px solid #eef2f7;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 650;
+      font-size: 15px;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "▾";
+      float: right;
+      color: #9ca3af;
+    }
+    details[open] summary::after { content: "▴"; }
+    details p { margin-top: 8px; font-size: 14px; color: #374151; }
+    .note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #6b7280;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    a { color: #2563eb; }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 8px 0 16px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      border: 1px solid #e0e7ff;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <header>
+      <div class="header-title">MotoCoach – Track Day Tools (Android)</div>
+      <nav class="nav-links">
+        <a href="faq-android.html" class="active">FAQ</a>
+        <a href="privacy-android.html">Privacy</a>
+        <a href="terms-android.html">Terms</a>
+        <a href="support-android.html">Support</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="card">
+        <h1>FAQ <span class="pill">Android</span></h1>
+        <p class="muted">Last updated: 4 January 2026</p>
+
+        <p>
+          MotoCoach (Android) is built for <strong>closed-circuit track days</strong>. Right now the app focuses on:
+          <strong>Video + GPS lap timing</strong> and <strong>saving sessions</strong> on your device.
+        </p>
+
+        <h2>General</h2>
+
+        <details>
+          <summary>What does MotoCoach (Android) do?</summary>
+          <p>
+            MotoCoach lets you record on-bike video while tracking GPS position and lap timing.
+            You set a start line, arm the session, and the app starts timing automatically once you move off
+            (using a speed gate). Each lap is detected when you cross the start line again.
+          </p>
+        </details>
+
+        <details>
+          <summary>Do I need an account or login?</summary>
+          <p>
+            No. There’s no account system in the Android build right now.
+            Sessions are saved locally on your phone.
+          </p>
+        </details>
+
+        <details>
+          <summary>Does MotoCoach need mobile signal?</summary>
+          <p>
+            No. GPS + lap timing + video recording can work without mobile signal.
+            (GPS uses satellites; you don’t need data for timing.)
+          </p>
+        </details>
+
+        <h2>Video + GPS</h2>
+
+        <details>
+          <summary>How do I start a session properly?</summary>
+          <p>
+            Recommended flow:
+          </p>
+          <p>
+            1) Open <strong>Video + GPS</strong><br/>
+            2) Wait for GPS accuracy to improve (you’ll see it as ± metres)<br/>
+            3) Tap <strong>Set start line</strong> exactly where you want laps to trigger<br/>
+            4) Tap <strong>Press out / Arm</strong><br/>
+            5) Ride out — timing + video starts once you hit the start speed gate (e.g. 25 km/h)
+          </p>
+          <p>
+            Tip: set the start line while you are stationary on the racing line (or as close as safely possible).
+          </p>
+        </details>
+
+        <details>
+          <summary>Why does the speed show 0 before the run starts?</summary>
+          <p>
+            This is intentional. The speed display stays at 0 until the run actually starts,
+            so it doesn’t show “dirty” low speeds when you’re standing still or creeping in the pits.
+            Once the run starts, the speed shows the real value and can drop below the gate speed normally.
+          </p>
+        </details>
+
+        <details>
+          <summary>What files does the app save?</summary>
+          <p>
+            When you save a session, MotoCoach can store:
+          </p>
+          <ul>
+            <li><strong>Video file</strong> (recorded during the run)</li>
+            <li><strong>Telemetry JSON</strong> (GPS samples used for playback + lap data)</li>
+            <li><strong>Session summary</strong> (laps, track name, notes)</li>
+          </ul>
+          <p>
+            These are saved on your device (app storage), and you can browse them in <strong>Video + GPS Sessions</strong>.
+          </p>
+        </details>
+
+        <h2>GPS & accuracy</h2>
+
+        <details>
+          <summary>It says “acquiring…” or accuracy looks poor — what do I do?</summary>
+          <p>
+            GPS can take longer depending on phone model, weather, and surroundings.
+            For best results:
+          </p>
+          <ul>
+            <li>Go outside with a clear view of the sky (away from tall buildings).</li>
+            <li>Give it 30–90 seconds to settle before setting the start line.</li>
+            <li>Turn on phone location services and allow “Precise location”.</li>
+            <li>If you just enabled location, close and reopen the app.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Will it still work if GPS accuracy isn’t perfect?</summary>
+          <p>
+            It can still work, but start-line precision matters for consistent lap triggers.
+            If accuracy is very poor, lap triggers may happen early/late.
+            Best practice is to set the start line once GPS has settled to a reasonable accuracy.
+          </p>
+        </details>
+
+        <h2>Safety</h2>
+
+        <details>
+          <summary>Can I use MotoCoach on public roads?</summary>
+          <p>
+            No. MotoCoach is intended for closed-circuit track use only.
+            Do not interact with the app while riding or driving.
+          </p>
+        </details>
+
+        <details>
+          <summary>Mounting advice</summary>
+          <p>
+            Use a secure mount appropriate for your vehicle and track rules.
+            Make sure the phone does not obstruct your view or any controls.
+            Set everything up in the paddock and leave it alone during the session.
+          </p>
+        </details>
+
+        <div class="note">
+          <strong>Note:</strong> This FAQ describes the current Android build (Video + GPS + session saving).
+          Features may change over time. For legal information, see <a href="terms-android.html">Terms</a> and
+          <a href="privacy-android.html">Privacy</a>.
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      © 2026 MotoCoach. All rights reserved.
+    </footer>
+  </div>
+</body>
+</html>
