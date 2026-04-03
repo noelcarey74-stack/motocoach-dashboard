@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Builder Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --panel-2: #182235;
+      --border: #2a3650;
+      --text: #eaf0ff;
+      --muted: #9fb0d0;
+      --accent: #4f8cff;
+      --accent-2: #6ea6ff;
+      --success: #1fbf75;
+      --danger: #e05252;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #08101c 0%, #0c1424 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status-pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(79, 140, 255, 0.12);
+      border: 1px solid rgba(110, 166, 255, 0.25);
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .card-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #dce6ff;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #0c1422;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 92px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.15);
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.2s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #0d1627;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #17a768, var(--success));
+      color: white;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #b63d3d, var(--danger));
+      color: white;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .output-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .output-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .message {
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: rgba(224, 82, 82, 0.12);
+      border: 1px solid rgba(224, 82, 82, 0.28);
+      color: #ffb7b7;
+    }
+
+    .message.success {
+      background: rgba(31, 191, 117, 0.12);
+      border: 1px solid rgba(31, 191, 117, 0.28);
+      color: #b4f2d0;
+    }
+
+    .result-shell {
+      background: #09101c;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      min-height: 560px;
+      overflow: auto;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .section {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .section h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    .section h4 {
+      margin: 14px 0 8px;
+      font-size: 15px;
+      color: #dce6ff;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 8px 14px;
+      margin-bottom: 8px;
+    }
+
+    .kv .key {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .kv .val {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: rgba(79, 140, 255, 0.12);
+      border: 1px solid rgba(79, 140, 255, 0.2);
+      color: #cfe0ff;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chapter {
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .chapter-title {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .chapter p {
+      margin: 8px 0;
+      line-height: 1.65;
+      color: #dfe7fa;
+      font-size: 14px;
+    }
+
+    .json-box {
+      background: #060b14;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      overflow: auto;
+      white-space: pre-wrap;
+      color: #d8e7ff;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 10px;
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-shell {
+        min-height: 420px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .row-2,
+      .row-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .kv {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">BK</div>
+        <div>
+          <h1>Book Builder</h1>
+          <p>Private dashboard for planning fiction and non-fiction books.</p>
+        </div>
+      </div>
+      <div class="status-pill">Supabase Function: <span id="functionNameLabel">book-builder</span></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <h2>Generate Book Structure</h2>
+          <p>Fill in the idea and generate a strong book outline from your Supabase function.</p>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label for="mode">Mode</label>
+            <select id="mode">
+              <option value="fiction_outline">Fiction Outline</option>
+              <option value="nonfiction_outline">Non-Fiction Outline</option>
+            </select>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="title">Working Title</label>
+              <input id="title" type="text" placeholder="The Time Brokers" />
+            </div>
+            <div class="field">
+              <label for="seriesTitle">Series Title</label>
+              <input id="seriesTitle" type="text" placeholder="The Time Brokers" />
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="subtitle">Subtitle</label>
+              <input id="subtitle" type="text" placeholder="For non-fiction books" />
+            </div>
+            <div class="field">
+              <label for="genre">Genre</label>
+              <input id="genre" type="text" placeholder="Supernatural thriller / sports training" />
+            </div>
+          </div>
+
+          <div class="row-3">
+            <div class="field">
+              <label for="tone">Tone</label>
+              <input id="tone" type="text" placeholder="Dark, cinematic, emotional" />
+            </div>
+            <div class="field">
+              <label for="setting">Setting</label>
+              <input id="setting" type="text" placeholder="New York / Ireland / etc." />
+            </div>
+            <div class="field">
+              <label for="chapterCount">Chapters</label>
+              <input id="chapterCount" type="number" min="6" max="40" value="10" />
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label for="audience">Audience</label>
+              <input id="audience" type="text" placeholder="Adult thriller readers / masters rowers" />
+            </div>
+            <div class="field">
+              <label for="pov">Point of View</label>
+              <input id="pov" type="text" placeholder="Third person close / first person" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="themes">Themes</label>
+            <input id="themes" type="text" placeholder="fate, choice, guilt, truth" />
+          </div>
+
+          <div class="field">
+            <label for="idea">Core Idea</label>
+            <textarea id="idea" placeholder="A man who sees likely outcomes when he touches people becomes drawn into hidden patterns of fate and manipulation."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="notes">Notes</label>
+            <textarea id="notes" placeholder="Strong twists, sadness, hope, menace, sequel hook, emotional pull."></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="generateBtn">Generate Outline</button>
+            <button class="btn-secondary" id="fillFictionBtn" type="button">Load Fiction Example</button>
+            <button class="btn-secondary" id="fillNonfictionBtn" type="button">Load Non-Fiction Example</button>
+            <button class="btn-danger" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="loading" id="loadingText">Generating outline…</div>
+
+          <div class="small-note">
+            This page uses your Supabase Edge Function. The OpenAI key stays in Supabase secrets and does not appear here.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Generated Output</h2>
+          <p>View the structured result from your function and keep the raw JSON for later chapter writing.</p>
+        </div>
+        <div class="card-body">
+          <div id="messageBox" class="message"></div>
+
+          <div class="output-toolbar">
+            <div class="output-meta" id="outputMeta">No result yet.</div>
+            <div class="btn-row">
+              <button class="btn-secondary" id="copyBtn" type="button">Copy JSON</button>
+              <button class="btn-success" id="downloadBtn" type="button">Download JSON</button>
+            </div>
+          </div>
+
+          <div class="result-shell" id="resultShell">
+            <div class="placeholder">
+              Your generated book outline will appear here.<br><br>
+              Start by entering a fiction or non-fiction idea on the left, then click <strong>Generate Outline</strong>.
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <button class="btn-secondary" id="toggleJsonBtn" type="button">Show Raw JSON</button>
+          </div>
+
+          <div class="json-box" id="jsonBox" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+    const FUNCTION_NAME = "book-builder";
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const els = {
+      mode: document.getElementById("mode"),
+      title: document.getElementById("title"),
+      seriesTitle: document.getElementById("seriesTitle"),
+      subtitle: document.getElementById("subtitle"),
+      genre: document.getElementById("genre"),
+      tone: document.getElementById("tone"),
+      setting: document.getElementById("setting"),
+      chapterCount: document.getElementById("chapterCount"),
+      audience: document.getElementById("audience"),
+      pov: document.getElementById("pov"),
+      themes: document.getElementById("themes"),
+      idea: document.getElementById("idea"),
+      notes: document.getElementById("notes"),
+      generateBtn: document.getElementById("generateBtn"),
+      fillFictionBtn: document.getElementById("fillFictionBtn"),
+      fillNonfictionBtn: document.getElementById("fillNonfictionBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      resultShell: document.getElementById("resultShell"),
+      jsonBox: document.getElementById("jsonBox"),
+      toggleJsonBtn: document.getElementById("toggleJsonBtn"),
+      copyBtn: document.getElementById("copyBtn"),
+      downloadBtn: document.getElementById("downloadBtn"),
+      messageBox: document.getElementById("messageBox"),
+      loadingText: document.getElementById("loadingText"),
+      outputMeta: document.getElementById("outputMeta"),
+      functionNameLabel: document.getElementById("functionNameLabel"),
+    };
+
+    els.functionNameLabel.textContent = FUNCTION_NAME;
+
+    let lastResult = null;
+    let showRawJson = false;
+
+    function showMessage(text, type = "success") {
+      els.messageBox.textContent = text;
+      els.messageBox.className = `message show ${type}`;
+    }
+
+    function clearMessage() {
+      els.messageBox.textContent = "";
+      els.messageBox.className = "message";
+    }
+
+    function setLoading(isLoading) {
+      els.generateBtn.disabled = isLoading;
+      els.loadingText.classList.toggle("show", isLoading);
+      els.generateBtn.textContent = isLoading ? "Generating..." : "Generate Outline";
+    }
+
+    function safeText(value) {
+      return value == null ? "" : String(value);
+    }
+
+    function escapeHtml(str) {
+      return safeText(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function parseThemes(value) {
+      return value
+        .split(",")
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+
+    function buildPayload() {
+      const payload = {
+        mode: els.mode.value,
+        title: els.title.value.trim() || undefined,
+        seriesTitle: els.seriesTitle.value.trim() || undefined,
+        subtitle: els.subtitle.value.trim() || undefined,
+        genre: els.genre.value.trim() || undefined,
+        tone: els.tone.value.trim() || undefined,
+        setting: els.setting.value.trim() || undefined,
+        audience: els.audience.value.trim() || undefined,
+        pov: els.pov.value.trim() || undefined,
+        chapterCount: Number(els.chapterCount.value) || undefined,
+        themes: parseThemes(els.themes.value),
+        idea: els.idea.value.trim(),
+        notes: els.notes.value.trim() || undefined,
+      };
+
+      return payload;
+    }
+
+    function renderTags(items) {
+      if (!Array.isArray(items) || !items.length) return `<div class="muted">None provided.</div>`;
+      return `<div class="tag-list">${items.map(i => `<span class="tag">${escapeHtml(i)}</span>`).join("")}</div>`;
+    }
+
+    function renderFiction(data) {
+      const chapters = Array.isArray(data.chapters) ? data.chapters : [];
+      return `
+        <div class="section">
+          <h3>${escapeHtml(data.workingTitle || "Untitled")}</h3>
+          <div class="kv">
+            <div class="key">Book Type</div><div class="val">${escapeHtml(data.bookType || "")}</div>
+            <div class="key">One-Line Hook</div><div class="val">${escapeHtml(data.oneLineHook || "")}</div>
+            <div class="key">Premise</div><div class="val">${escapeHtml(data.premise || "")}</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Main Character</h3>
+          <div class="kv">
+            <div class="key">Name</div><div class="val">${escapeHtml(data.mainCharacter?.name || "")}</div>
+            <div class="key">Role</div><div class="val">${escapeHtml(data.mainCharacter?.role || "")}</div>
+            <div class="key">Goal</div><div class="val">${escapeHtml(data.mainCharacter?.goal || "")}</div>
+            <div class="key">Flaw</div><div class="val">${escapeHtml(data.mainCharacter?.flaw || "")}</div>
+            <div class="key">Fear</div><div class="val">${escapeHtml(data.mainCharacter?.fear || "")}</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Themes</h3>
+          ${renderTags(data.themes)}
+        </div>
+
+        <div class="section">
+          <h3>Twists</h3>
+          ${renderTags(data.twists)}
+        </div>
+
+        <div class="section">
+          <h3>Chapters</h3>
+          ${chapters.length ? chapters.map(ch => `
+            <div class="chapter">
+              <h4 class="chapter-title">Chapter ${escapeHtml(ch.number)} — ${escapeHtml(ch.title)}</h4>
+              <p><strong>Summary:</strong> ${escapeHtml(ch.summary || "")}</p>
+              <p><strong>Emotion:</strong> ${escapeHtml(ch.emotion || "")}</p>
+              <p><strong>Ending Hook:</strong> ${escapeHtml(ch.endingHook || "")}</p>
+            </div>
+          `).join("") : `<div class="muted">No chapters returned.</div>`}
+        </div>
+      `;
+    }
+
+    function renderNonfiction(data) {
+      const chapters = Array.isArray(data.chapters) ? data.chapters : [];
+      return `
+        <div class="section">
+          <h3>${escapeHtml(data.workingTitle || "Untitled")}</h3>
+          <div class="kv">
+            <div class="key">Book Type</div><div class="val">${escapeHtml(data.bookType || "")}</div>
+            <div class="key">Subtitle</div><div class="val">${escapeHtml(data.subtitle || "")}</div>
+            <div class="key">Reader Promise</div><div class="val">${escapeHtml(data.readerPromise || "")}</div>
+            <div class="key">Audience</div><div class="val">${escapeHtml(data.audience || "")}</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Chapters</h3>
+          ${chapters.length ? chapters.map(ch => `
+            <div class="chapter">
+              <h4 class="chapter-title">Chapter ${escapeHtml(ch.number)} — ${escapeHtml(ch.title)}</h4>
+              <p><strong>Goal:</strong> ${escapeHtml(ch.goal || "")}</p>
+              <p><strong>Summary:</strong> ${escapeHtml(ch.summary || "")}</p>
+              <p><strong>Reader Takeaway:</strong> ${escapeHtml(ch.readerTakeaway || "")}</p>
+            </div>
+          `).join("") : `<div class="muted">No chapters returned.</div>`}
+        </div>
+
+        <div class="section">
+          <h3>Bonus Sections</h3>
+          ${renderTags(data.bonusSections)}
+        </div>
+      `;
+    }
+
+    function renderResult(responseData) {
+      if (!responseData || !responseData.data) {
+        els.resultShell.innerHTML = `<div class="placeholder">No result returned.</div>`;
+        return;
+      }
+
+      const data = responseData.data;
+      const html = data.bookType === "nonfiction"
+        ? renderNonfiction(data)
+        : renderFiction(data);
+
+      els.resultShell.innerHTML = html;
+      els.jsonBox.textContent = JSON.stringify(responseData, null, 2);
+      els.outputMeta.textContent = `Mode: ${responseData.mode || "-"} • Generated successfully`;
+    }
+
+    async function generateOutline() {
+      clearMessage();
+
+      const payload = buildPayload();
+
+      if (!payload.idea) {
+        showMessage("Please enter a core idea before generating.", "error");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const { data, error } = await supabaseClient.functions.invoke(FUNCTION_NAME, {
+          body: payload,
+        });
+
+        if (error) {
+          throw new Error(error.message || "Function call failed.");
+        }
+
+        if (!data) {
+          throw new Error("No data returned from function.");
+        }
+
+        lastResult = data;
+        renderResult(data);
+        showMessage("Outline generated successfully.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage(err.message || "Something went wrong while generating the outline.", "error");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function copyJson() {
+      if (!lastResult) {
+        showMessage("Nothing to copy yet.", "error");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(lastResult, null, 2));
+        showMessage("JSON copied to clipboard.", "success");
+      } catch (err) {
+        showMessage("Could not copy JSON.", "error");
+      }
+    }
+
+    function downloadJson() {
+      if (!lastResult) {
+        showMessage("Nothing to download yet.", "error");
+        return;
+      }
+
+      const blob = new Blob([JSON.stringify(lastResult, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `book-outline-${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showMessage("JSON downloaded.", "success");
+    }
+
+    function toggleRawJson() {
+      showRawJson = !showRawJson;
+      els.jsonBox.style.display = showRawJson ? "block" : "none";
+      els.toggleJsonBtn.textContent = showRawJson ? "Hide Raw JSON" : "Show Raw JSON";
+    }
+
+    function clearForm() {
+      els.title.value = "";
+      els.seriesTitle.value = "";
+      els.subtitle.value = "";
+      els.genre.value = "";
+      els.tone.value = "";
+      els.setting.value = "";
+      els.chapterCount.value = "10";
+      els.audience.value = "";
+      els.pov.value = "";
+      els.themes.value = "";
+      els.idea.value = "";
+      els.notes.value = "";
+      lastResult = null;
+      els.resultShell.innerHTML = `
+        <div class="placeholder">
+          Your generated book outline will appear here.<br><br>
+          Start by entering a fiction or non-fiction idea on the left, then click <strong>Generate Outline</strong>.
+        </div>
+      `;
+      els.jsonBox.textContent = "";
+      els.outputMeta.textContent = "No result yet.";
+      clearMessage();
+    }
+
+    function loadFictionExample() {
+      els.mode.value = "fiction_outline";
+      els.title.value = "The Time Brokers";
+      els.seriesTitle.value = "The Time Brokers";
+      els.subtitle.value = "";
+      els.genre.value = "Supernatural thriller";
+      els.tone.value = "Dark, cinematic, emotional";
+      els.setting.value = "New York";
+      els.chapterCount.value = "10";
+      els.audience.value = "Adult thriller readers";
+      els.pov.value = "Third person close";
+      els.themes.value = "fate, choice, guilt, truth, power";
+      els.idea.value = "A man who sees likely outcomes when he touches people becomes drawn into hidden patterns of fate and manipulation.";
+      els.notes.value = "Need strong twists, sadness, hope, menace, emotional pull, sequel hook.";
+    }
+
+    function loadNonfictionExample() {
+      els.mode.value = "nonfiction_outline";
+      els.title.value = "Masters Rowing Made Simple";
+      els.seriesTitle.value = "";
+      els.subtitle.value = "Race Execution, Training Systems & Performance";
+      els.genre.value = "Sports training";
+      els.tone.value = "Clear, practical, motivating";
+      els.setting.value = "Masters rowing";
+      els.chapterCount.value = "10";
+      els.audience.value = "Masters rowers and coaches";
+      els.pov.value = "";
+      els.themes.value = "consistency, technique, race planning, recovery";
+      els.idea.value = "A practical guide for masters rowers who want better training, smarter race plans, and clearer structure.";
+      els.notes.value = "Keep it easy to read, commercially useful, motivating, and chapter-led.";
+    }
+
+    els.generateBtn.addEventListener("click", generateOutline);
+    els.copyBtn.addEventListener("click", copyJson);
+    els.downloadBtn.addEventListener("click", downloadJson);
+    els.toggleJsonBtn.addEventListener("click", toggleRawJson);
+    els.clearBtn.addEventListener("click", clearForm);
+    els.fillFictionBtn.addEventListener("click", loadFictionExample);
+    els.fillNonfictionBtn.addEventListener("click", loadNonfictionExample);
+  </script>
+</body>
+</html>
