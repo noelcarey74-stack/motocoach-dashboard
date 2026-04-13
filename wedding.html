@@ -1,93 +1,505 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blair & Emmett Wedding</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blair & Emmett Wedding</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Georgia', serif;
-    background: #f9f9f9;
-    color: #222;
-    text-align: center;
-}
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #666;
+      --accent: #b30000;
+      --button: #111;
+      --button-hover: #333;
+      --border: #e7e2dc;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+      --radius: 18px;
+      --max: 760px;
+    }
 
-.container {
-    padding: 40px 20px;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-h1 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background: linear-gradient(180deg, #faf8f5 0%, #f3efea 100%);
+      color: var(--text);
+      text-align: center;
+    }
 
-.subtitle {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 40px;
-}
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
 
-.button {
-    display: block;
-    width: 90%;
-    max-width: 320px;
-    margin: 15px auto;
-    padding: 18px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 12px;
-    background: black;
-    color: white;
-    cursor: pointer;
-    text-decoration: none;
-}
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 36px 20px 28px;
+      margin-top: 18px;
+    }
 
-.button:hover {
-    background: #333;
-}
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      line-height: 1.15;
+      font-weight: 700;
+    }
 
-.divider {
-    width: 80px;
-    height: 3px;
-    background: #c00000;
-    margin: 25px auto;
-}
+    .divider {
+      width: 90px;
+      height: 3px;
+      background: var(--accent);
+      margin: 20px auto 18px;
+      border-radius: 999px;
+    }
 
-.footer {
-    margin-top: 40px;
-    font-size: 0.9rem;
-    color: #888;
-}
-</style>
+    .subtitle {
+      margin: 0 auto 28px;
+      max-width: 520px;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
 
+    .button,
+    button,
+    .file-label {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      margin: 12px auto;
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 14px;
+      background: var(--button);
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+    }
+
+    .button:hover,
+    button:hover,
+    .file-label:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .button.secondary,
+    button.secondary {
+      background: #fff;
+      color: #111;
+      border: 1px solid var(--border);
+    }
+
+    .button.secondary:hover,
+    button.secondary:hover {
+      background: #f8f8f8;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .status {
+      margin: 14px auto 4px;
+      min-height: 24px;
+      max-width: 520px;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px 18px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    form {
+      max-width: 540px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label.text-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.96rem;
+      color: #333;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fff;
+      color: #111;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .gallery-item {
+      display: block;
+      background: #f3f3f3;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      text-decoration: none;
+      min-height: 140px;
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #ececec;
+    }
+
+    .gallery-empty {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .details-card {
+      max-width: 520px;
+      margin: 0 auto;
+      text-align: left;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .details-card p {
+      margin: 0 0 10px;
+      color: #333;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.92rem;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    @media (min-width: 700px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gallery-item img {
+        height: 200px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Blair &amp; Emmett 💍</h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Share your memories from today. Upload your favourite photos, enjoy the wedding gallery,
+        and leave Blair a private message to treasure forever.
+      </p>
 
-<div class="container">
+      <label for="photoUpload" class="file-label">📸 Upload Photos</label>
+      <input id="photoUpload" type="file" accept="image/*" multiple />
 
-    <h1>Blair & Emmett 💍</h1>
-    <div class="divider"></div>
-    <p class="subtitle">Share your memories from today</p>
+      <a href="#gallery" class="button secondary">🖼️ View Shared Gallery</a>
+      <a href="#message" class="button secondary">💌 Leave Blair a Private Message</a>
+      <a href="#details" class="button secondary">📍 Wedding Details</a>
 
-    <a href="https://photos.app.goo.gl/XPDm9b1UFjHWhXWa8" target="_blank" class="button">
-        📸 Upload & View Photos
-    </a>
-
-    <a href="#" class="button">
-        💌 Leave a Message (Coming Soon)
-    </a>
-
-    <a href="#" class="button">
-        📍 Wedding Details
-    </a>
-
-    <div class="footer">
-        Thank you for being part of our special day
+      <div id="uploadStatus" class="status"></div>
+      <div class="small-note">
+        Photos only please. Best results: JPG, PNG, HEIC. Max 10MB each.
+      </div>
     </div>
 
-</div>
+    <div class="section" id="gallery">
+      <h2>Wedding Gallery</h2>
+      <p>
+        Browse and save special moments shared by family and friends.
+      </p>
+      <button id="refreshGalleryBtn" class="secondary" type="button">Refresh Gallery</button>
+      <div id="galleryStatus" class="status"></div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div id="galleryEmpty" class="gallery-empty" style="display:none;">
+        No photos yet. Be the first to share a memory.
+      </div>
+    </div>
 
+    <div class="section" id="message">
+      <h2>Private Message for Blair</h2>
+      <p>
+        Your message will be saved privately and emailed directly as a keepsake.
+      </p>
+
+      <form id="messageForm">
+        <div class="field">
+          <label class="text-label" for="guestName">Your name</label>
+          <input id="guestName" name="name" type="text" maxlength="120" placeholder="Enter your name" />
+        </div>
+
+        <div class="field">
+          <label class="text-label" for="guestMessage">Your message</label>
+          <textarea id="guestMessage" name="message" maxlength="5000" placeholder="Write your private message for Blair here..." required></textarea>
+        </div>
+
+        <button type="submit">💌 Send Private Message</button>
+      </form>
+
+      <div id="messageStatus" class="status"></div>
+    </div>
+
+    <div class="section" id="details">
+      <h2>Wedding Details</h2>
+      <div class="details-card">
+        <p><strong>Ceremony:</strong> St. Fin Barre’s Cathedral, Cork</p>
+        <p><strong>Reception:</strong> Maryborough Hotel</p>
+        <p><strong>Celebration:</strong> Thank you for being part of Blair &amp; Emmett’s special day</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      Thank you for sharing the day with Blair &amp; Emmett.
+    </div>
+  </div>
+
+  <script>
+    /*
+      ============================
+      REPLACE THESE VALUES
+      ============================
+    */
+    const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
+
+    // Edge Functions
+    const UPLOAD_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-upload`;
+    const MESSAGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-message`;
+
+    // Public table read endpoint for gallery
+    const PHOTOS_TABLE_URL = `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
+
+    /*
+      ============================
+      ELEMENTS
+      ============================
+    */
+    const photoUpload = document.getElementById("photoUpload");
+    const uploadStatus = document.getElementById("uploadStatus");
+
+    const galleryGrid = document.getElementById("galleryGrid");
+    const galleryStatus = document.getElementById("galleryStatus");
+    const galleryEmpty = document.getElementById("galleryEmpty");
+    const refreshGalleryBtn = document.getElementById("refreshGalleryBtn");
+
+    const messageForm = document.getElementById("messageForm");
+    const guestName = document.getElementById("guestName");
+    const guestMessage = document.getElementById("guestMessage");
+    const messageStatus = document.getElementById("messageStatus");
+
+    /*
+      ============================
+      PHOTO UPLOAD
+      ============================
+    */
+    photoUpload.addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+
+      uploadStatus.textContent = `Uploading ${files.length} photo(s)...`;
+
+      try {
+        for (const file of files) {
+          if (!file.type.startsWith("image/")) {
+            throw new Error(`"${file.name}" is not an image.`);
+          }
+
+          if (file.size > 10 * 1024 * 1024) {
+            throw new Error(`"${file.name}" is larger than 10MB.`);
+          }
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          const res = await fetch(UPLOAD_FUNCTION_URL, {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            },
+            body: formData
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data.error || "Upload failed.");
+          }
+        }
+
+        uploadStatus.textContent = "Photos uploaded successfully.";
+        photoUpload.value = "";
+        await loadGallery();
+      } catch (error) {
+        uploadStatus.textContent = error.message || "Upload failed.";
+      }
+    });
+
+    /*
+      ============================
+      PRIVATE MESSAGE FORM
+      ============================
+    */
+    messageForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const name = guestName.value.trim();
+      const message = guestMessage.value.trim();
+
+      if (!message) {
+        messageStatus.textContent = "Please write a message before sending.";
+        return;
+      }
+
+      messageStatus.textContent = "Sending your message...";
+
+      try {
+        const res = await fetch(MESSAGE_FUNCTION_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ name, message })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Message failed to send.");
+        }
+
+        messageStatus.textContent = "Your private message has been sent.";
+        messageForm.reset();
+      } catch (error) {
+        messageStatus.textContent = error.message || "Message failed to send.";
+      }
+    });
+
+    /*
+      ============================
+      GALLERY
+      ============================
+    */
+    async function loadGallery() {
+      galleryStatus.textContent = "Loading gallery...";
+      galleryGrid.innerHTML = "";
+      galleryEmpty.style.display = "none";
+
+      try {
+        const res = await fetch(PHOTOS_TABLE_URL, {
+          method: "GET",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Could not load gallery.");
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          galleryStatus.textContent = "";
+          galleryEmpty.style.display = "block";
+          return;
+        }
+
+        for (const item of data) {
+          if (!item.file_url) continue;
+
+          const link = document.createElement("a");
+          link.href = item.file_url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.className = "gallery-item";
+
+          const img = document.createElement("img");
+          img.src = item.file_url;
+          img.alt = "Wedding photo";
+
+          link.appendChild(img);
+          galleryGrid.appendChild(link);
+        }
+
+        galleryStatus.textContent = "";
+      } catch (error) {
+        galleryStatus.textContent = error.message || "Could not load gallery.";
+      }
+    }
+
+    refreshGalleryBtn.addEventListener("click", loadGallery);
+
+    loadGallery();
+  </script>
 </body>
 </html>
