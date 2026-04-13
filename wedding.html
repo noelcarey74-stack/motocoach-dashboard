@@ -43,8 +43,19 @@
       border: 1px solid var(--border);
       border-radius: 28px;
       box-shadow: var(--shadow);
-      padding: 36px 20px 28px;
+      padding: 28px 20px 28px;
       margin-top: 18px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 22px;
+      border-radius: 22px;
+      object-fit: cover;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
     }
 
     h1 {
@@ -213,21 +224,6 @@
       font-size: 0.96rem;
     }
 
-    .details-card {
-      max-width: 520px;
-      margin: 0 auto;
-      text-align: left;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .details-card p {
-      margin: 0 0 10px;
-      color: #333;
-    }
-
     .footer {
       margin-top: 24px;
       font-size: 0.92rem;
@@ -243,12 +239,17 @@
       .gallery-item img {
         height: 200px;
       }
+
+      .hero-image {
+        max-width: 340px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="hero">
+      <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
       <h1>Blair &amp; Emmett 💍</h1>
       <div class="divider"></div>
       <p class="subtitle">
@@ -261,7 +262,6 @@
 
       <a href="#gallery" class="button secondary">🖼️ View Shared Gallery</a>
       <a href="#message" class="button secondary">💌 Leave Blair a Private Message</a>
-      <a href="#details" class="button secondary">📍 Wedding Details</a>
 
       <div id="uploadStatus" class="status"></div>
       <div class="small-note">
@@ -305,41 +305,19 @@
       <div id="messageStatus" class="status"></div>
     </div>
 
-    <div class="section" id="details">
-      <h2>Wedding Details</h2>
-      <div class="details-card">
-        <p><strong>Ceremony:</strong> St. Fin Barre’s Cathedral, Cork</p>
-        <p><strong>Reception:</strong> Maryborough Hotel</p>
-        <p><strong>Celebration:</strong> Thank you for being part of Blair &amp; Emmett’s special day</p>
-      </div>
-    </div>
-
     <div class="footer">
       Thank you for sharing the day with Blair &amp; Emmett.
     </div>
   </div>
 
   <script>
-    /*
-      ============================
-      REPLACE THESE VALUES
-      ============================
-    */
     const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
 
-    // Edge Functions
     const UPLOAD_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-upload`;
     const MESSAGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-message`;
-
-    // Public table read endpoint for gallery
     const PHOTOS_TABLE_URL = `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
 
-    /*
-      ============================
-      ELEMENTS
-      ============================
-    */
     const photoUpload = document.getElementById("photoUpload");
     const uploadStatus = document.getElementById("uploadStatus");
 
@@ -353,11 +331,6 @@
     const guestMessage = document.getElementById("guestMessage");
     const messageStatus = document.getElementById("messageStatus");
 
-    /*
-      ============================
-      PHOTO UPLOAD
-      ============================
-    */
     photoUpload.addEventListener("change", async (event) => {
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
@@ -401,11 +374,6 @@
       }
     });
 
-    /*
-      ============================
-      PRIVATE MESSAGE FORM
-      ============================
-    */
     messageForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -443,11 +411,6 @@
       }
     });
 
-    /*
-      ============================
-      GALLERY
-      ============================
-    */
     async function loadGallery() {
       galleryStatus.textContent = "Loading gallery...";
       galleryGrid.innerHTML = "";
@@ -498,7 +461,6 @@
     }
 
     refreshGalleryBtn.addEventListener("click", loadGallery);
-
     loadGallery();
   </script>
 </body>
