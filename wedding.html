@@ -7,17 +7,20 @@
 
   <style>
     :root {
-      --bg: #f7f5f2;
-      --card: #ffffff;
-      --text: #1f1f1f;
-      --muted: #666;
-      --accent: #b30000;
-      --button: #111;
-      --button-hover: #333;
-      --border: #e7e2dc;
-      --shadow: 0 10px 30px rgba(0,0,0,0.08);
-      --radius: 18px;
-      --max: 760px;
+      --bg-top: #fbf7f3;
+      --bg-bottom: #f3ece5;
+      --card: rgba(255, 255, 255, 0.96);
+      --text: #2f2a28;
+      --muted: #7a6d66;
+      --accent: #c8a27a;
+      --accent-deep: #a97f58;
+      --button: #5f4a42;
+      --button-hover: #4d3b35;
+      --button-light: #fffaf6;
+      --border: #eadfce;
+      --shadow: 0 12px 34px rgba(76, 54, 41, 0.10);
+      --radius: 22px;
+      --max: 820px;
     }
 
     * {
@@ -27,24 +30,91 @@
     body {
       margin: 0;
       font-family: Georgia, serif;
-      background: linear-gradient(180deg, #faf8f5 0%, #f3efea 100%);
+      background:
+        radial-gradient(circle at top left, rgba(214, 176, 150, 0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(196, 168, 139, 0.18), transparent 20%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       color: var(--text);
       text-align: center;
     }
 
     .wrap {
+      position: relative;
       max-width: var(--max);
       margin: 0 auto;
-      padding: 24px 16px 48px;
+      padding: 30px 16px 56px;
     }
 
-    .hero {
+    .wrap::before,
+    .wrap::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .wrap::before {
+      top: 10px;
+      left: -10px;
+      background:
+        radial-gradient(circle at 35% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 58% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 72% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 28% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 58% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .wrap::after {
+      bottom: 10px;
+      right: -10px;
+      background:
+        radial-gradient(circle at 65% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 42% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 28% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 72% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 42% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      z-index: 1;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 28px;
       box-shadow: var(--shadow);
-      padding: 28px 20px 28px;
+    }
+
+    .hero {
+      padding: 30px 20px 28px;
       margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "❀";
+      position: absolute;
+      font-size: 30px;
+      color: rgba(200, 162, 122, 0.28);
+      line-height: 1;
+    }
+
+    .hero::before {
+      top: 14px;
+      left: 18px;
+    }
+
+    .hero::after {
+      top: 14px;
+      right: 18px;
     }
 
     .hero-image {
@@ -52,32 +122,34 @@
       width: 100%;
       max-width: 300px;
       margin: 0 auto 22px;
-      border-radius: 22px;
+      border-radius: 24px;
       object-fit: cover;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
       border: 1px solid var(--border);
     }
 
     h1 {
       margin: 0;
-      font-size: 2.2rem;
-      line-height: 1.15;
+      font-size: 2.35rem;
+      line-height: 1.1;
       font-weight: 700;
+      color: #5f463a;
+      letter-spacing: 0.2px;
     }
 
     .divider {
       width: 90px;
       height: 3px;
-      background: var(--accent);
-      margin: 20px auto 18px;
+      background: linear-gradient(90deg, #d8c59e 0%, #c8a27a 50%, #d8c59e 100%);
+      margin: 18px auto 18px;
       border-radius: 999px;
     }
 
     .subtitle {
       margin: 0 auto 28px;
-      max-width: 520px;
+      max-width: 560px;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.6;
       color: var(--muted);
     }
 
@@ -86,18 +158,19 @@
     .file-label {
       display: block;
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       margin: 12px auto;
       padding: 16px 18px;
-      font-size: 1.05rem;
+      font-size: 1.04rem;
       border: none;
-      border-radius: 14px;
+      border-radius: 15px;
       background: var(--button);
       color: #fff;
       cursor: pointer;
       text-decoration: none;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
       font-family: inherit;
+      box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
     }
 
     .button:hover,
@@ -109,14 +182,15 @@
 
     .button.secondary,
     button.secondary {
-      background: #fff;
-      color: #111;
+      background: var(--button-light);
+      color: #5d4b44;
       border: 1px solid var(--border);
+      box-shadow: none;
     }
 
     .button.secondary:hover,
     button.secondary:hover {
-      background: #f8f8f8;
+      background: #fff;
     }
 
     input[type="file"] {
@@ -132,23 +206,20 @@
     }
 
     .section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 24px 18px;
+      padding: 26px 18px;
       margin-top: 18px;
     }
 
     .section h2 {
-      margin: 0 0 14px;
-      font-size: 1.35rem;
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      color: #5f463a;
     }
 
     .section p {
       margin: 0 0 14px;
       color: var(--muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     form {
@@ -165,7 +236,8 @@
       display: block;
       margin-bottom: 6px;
       font-size: 0.96rem;
-      color: #333;
+      color: #5d4b44;
+      font-weight: 600;
     }
 
     input[type="text"],
@@ -176,8 +248,16 @@
       border: 1px solid var(--border);
       font-size: 1rem;
       font-family: inherit;
-      background: #fff;
+      background: #fffdfb;
       color: #111;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
     }
 
     textarea {
@@ -196,18 +276,24 @@
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
       margin-top: 18px;
     }
 
     .gallery-item {
       display: block;
-      background: #f3f3f3;
+      background: #f7f2ee;
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       text-decoration: none;
       min-height: 140px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
     }
 
     .gallery-item img {
@@ -215,7 +301,7 @@
       width: 100%;
       height: 180px;
       object-fit: cover;
-      background: #ececec;
+      background: #ece7e2;
     }
 
     .gallery-empty {
@@ -226,9 +312,9 @@
 
     .footer {
       margin-top: 24px;
-      font-size: 0.92rem;
-      color: #888;
-      line-height: 1.5;
+      font-size: 0.95rem;
+      color: #8c7d75;
+      line-height: 1.6;
     }
 
     @media (min-width: 700px) {
@@ -237,11 +323,15 @@
       }
 
       .gallery-item img {
-        height: 200px;
+        height: 210px;
       }
 
       .hero-image {
         max-width: 340px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
       }
     }
   </style>
@@ -251,18 +341,18 @@
     <div class="hero">
       <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
 
-      <h1>Blair &amp; Emmett 💍</h1>
+      <h1>Blair &amp; Emmett</h1>
       <div class="divider"></div>
       <p class="subtitle">
-        Share your memories from today. Upload your favourite photos, enjoy the wedding gallery,
-        and leave Blair & Emmett a private message to treasure forever.
+        Share your memories from our special day. Upload your favourite photos, enjoy the wedding gallery,
+        and leave Blair &amp; Emmett a private message to treasure forever.
       </p>
 
       <label for="photoUpload" class="file-label">📸 Upload Photos</label>
       <input id="photoUpload" type="file" accept="image/*" multiple />
 
       <a href="#gallery" class="button secondary">🖼️ View Shared Gallery</a>
-      <a href="#message" class="button secondary">💌 Leave Blair & Emmett a Private Message</a>
+      <a href="#message" class="button secondary">💌 Leave Blair &amp; Emmett a Private Message</a>
 
       <div id="uploadStatus" class="status"></div>
       <div class="small-note">
@@ -284,7 +374,7 @@
     </div>
 
     <div class="section" id="message">
-      <h2>Private Message for Blair</h2>
+      <h2>Private Message for Blair &amp; Emmett</h2>
       <p>
         Your message will be saved privately and emailed directly as a keepsake.
       </p>
@@ -297,7 +387,7 @@
 
         <div class="field">
           <label class="text-label" for="guestMessage">Your message</label>
-          <textarea id="guestMessage" name="message" maxlength="5000" placeholder="Write your private message for Blair here..." required></textarea>
+          <textarea id="guestMessage" name="message" maxlength="5000" placeholder="Write your private message here..." required></textarea>
         </div>
 
         <button type="submit">💌 Send Private Message</button>
