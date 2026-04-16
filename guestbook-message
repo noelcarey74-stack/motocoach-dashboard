@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guest Book | Blair & Emmett Wedding</title>
+
+  <style>
+    :root {
+      --bg-top: #fbf7f3;
+      --bg-bottom: #f3ece5;
+      --card: rgba(255, 255, 255, 0.97);
+      --text: #2f2a28;
+      --muted: #7a6d66;
+      --accent: #c8a27a;
+      --accent-deep: #a97f58;
+      --button: #5f4a42;
+      --button-hover: #4d3b35;
+      --button-light: #fffaf6;
+      --border: #eadfce;
+      --shadow: 0 12px 34px rgba(76, 54, 41, 0.10);
+      --max: 860px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background:
+        radial-gradient(circle at top left, rgba(214, 176, 150, 0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(196, 168, 139, 0.18), transparent 20%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text);
+      text-align: center;
+    }
+
+    .wrap {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 16px 56px;
+    }
+
+    .wrap::before,
+    .wrap::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .wrap::before {
+      top: 10px;
+      left: -10px;
+      background:
+        radial-gradient(circle at 35% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 58% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 72% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 28% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 58% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .wrap::after {
+      bottom: 10px;
+      right: -10px;
+      background:
+        radial-gradient(circle at 65% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 42% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 28% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 72% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 42% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 30px 20px 28px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "❀";
+      position: absolute;
+      font-size: 30px;
+      color: rgba(200, 162, 122, 0.28);
+      line-height: 1;
+    }
+
+    .hero::before {
+      top: 14px;
+      left: 18px;
+    }
+
+    .hero::after {
+      top: 14px;
+      right: 18px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto 22px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #5f463a;
+      letter-spacing: 0.2px;
+    }
+
+    .divider {
+      width: 90px;
+      height: 3px;
+      background: linear-gradient(90deg, #d8c59e 0%, #c8a27a 50%, #d8c59e 100%);
+      margin: 18px auto 18px;
+      border-radius: 999px;
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 600px;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .button,
+    button {
+      display: inline-block;
+      min-width: 180px;
+      margin: 10px 6px 0;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 15px;
+      background: var(--button);
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+      box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
+    }
+
+    .button:hover,
+    button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .button.secondary {
+      background: var(--button-light);
+      color: #5d4b44;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: #fff;
+    }
+
+    .section {
+      padding: 26px 18px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      color: #5f463a;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    form {
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.96rem;
+      color: #5d4b44;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fffdfb;
+      color: #111;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .status {
+      margin: 14px auto 4px;
+      min-height: 24px;
+      max-width: 520px;
+      font-size: 0.96rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .messages-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .message-card {
+      background: #fffaf6;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    }
+
+    .message-name {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      color: #5f463a;
+      font-weight: 700;
+    }
+
+    .message-text {
+      margin: 0;
+      color: #4e423d;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .message-date {
+      margin-top: 10px;
+      font-size: 0.86rem;
+      color: #9a8c84;
+    }
+
+    .empty-state {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-top: 10px;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.95rem;
+      color: #8c7d75;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 720px) {
+      .hero-image {
+        max-width: 300px;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+      }
+
+      .messages-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
+
+      <h1>Guest Book</h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Leave a message, memory, or words of love for Blair &amp; Emmett.
+        Your note will appear below for everyone to enjoy.
+      </p>
+
+      <a href="wedding.html" class="button secondary">← Back to Wedding Page</a>
+    </div>
+
+    <div class="section">
+      <h2>Sign the Guest Book</h2>
+      <p>Write something lovely for the couple to remember forever.</p>
+
+      <form id="guestbookForm">
+        <div class="field">
+          <label for="guestName">Your name</label>
+          <input
+            id="guestName"
+            name="name"
+            type="text"
+            maxlength="120"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="guestMessage">Your message</label>
+          <textarea
+            id="guestMessage"
+            name="message"
+            maxlength="3000"
+            placeholder="Write your message for Blair & Emmett here..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit">💌 Sign the Guest Book</button>
+      </form>
+
+      <div id="formStatus" class="status"></div>
+    </div>
+
+    <div class="section">
+      <h2>Messages from Family & Friends</h2>
+      <p>Read and enjoy the love being shared on the day.</p>
+
+      <div id="messagesStatus" class="status"></div>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        No messages yet. Be the first to sign the guest book.
+      </div>
+      <div id="messagesGrid" class="messages-grid"></div>
+    </div>
+
+    <div class="footer">
+      Thank you for celebrating with Blair &amp; Emmett.
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE";
+
+    const GUESTBOOK_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/guestbook-message`;
+    const GUESTBOOK_TABLE_URL = `${SUPABASE_URL}/rest/v1/guestbook_messages?select=name,message,created_at&order=created_at.desc`;
+
+    const guestbookForm = document.getElementById("guestbookForm");
+    const guestName = document.getElementById("guestName");
+    const guestMessage = document.getElementById("guestMessage");
+    const formStatus = document.getElementById("formStatus");
+
+    const messagesGrid = document.getElementById("messagesGrid");
+    const messagesStatus = document.getElementById("messagesStatus");
+    const emptyState = document.getElementById("emptyState");
+
+    function formatDate(value) {
+      try {
+        return new Date(value).toLocaleString("en-IE", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        });
+      } catch {
+        return "";
+      }
+    }
+
+    async function loadMessages() {
+      messagesStatus.textContent = "Loading messages...";
+      messagesGrid.innerHTML = "";
+      emptyState.style.display = "none";
+
+      try {
+        const res = await fetch(GUESTBOOK_TABLE_URL, {
+          method: "GET",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Could not load guest book messages.");
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          messagesStatus.textContent = "";
+          emptyState.style.display = "block";
+          return;
+        }
+
+        data.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "message-card";
+
+          const safeName = item.name || "Guest";
+          const safeMessage = item.message || "";
+
+          card.innerHTML = `
+            <p class="message-name">${safeName}</p>
+            <p class="message-text"></p>
+            <div class="message-date">${formatDate(item.created_at)}</div>
+          `;
+
+          card.querySelector(".message-text").textContent = safeMessage;
+          messagesGrid.appendChild(card);
+        });
+
+        messagesStatus.textContent = "";
+      } catch (error) {
+        messagesStatus.textContent = error.message || "Could not load guest book messages.";
+      }
+    }
+
+    guestbookForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const name = guestName.value.trim();
+      const message = guestMessage.value.trim();
+
+      if (!name || !message) {
+        formStatus.textContent = "Please enter your name and message.";
+        return;
+      }
+
+      formStatus.textContent = "Signing the guest book...";
+
+      try {
+        const res = await fetch(GUESTBOOK_FUNCTION_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ name, message })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Could not sign the guest book.");
+        }
+
+        formStatus.textContent = "Thank you — your message has been added.";
+        guestbookForm.reset();
+        await loadMessages();
+      } catch (error) {
+        formStatus.textContent = error.message || "Could not sign the guest book.";
+      }
+    });
+
+    loadMessages();
+  </script>
+</body>
+</html>
