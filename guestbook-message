@@ -387,7 +387,7 @@
 
   <script>
     const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
 
     const GUESTBOOK_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/guestbook-message`;
     const GUESTBOOK_TABLE_URL = `${SUPABASE_URL}/rest/v1/guestbook_messages?select=name,message,created_at&order=created_at.desc`;
