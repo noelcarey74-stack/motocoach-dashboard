@@ -222,49 +222,6 @@
       line-height: 1.6;
     }
 
-    form {
-      max-width: 540px;
-      margin: 0 auto;
-      text-align: left;
-    }
-
-    .field {
-      margin-bottom: 14px;
-    }
-
-    label.text-label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.96rem;
-      color: #5d4b44;
-      font-weight: 600;
-    }
-
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      font-size: 1rem;
-      font-family: inherit;
-      background: #fffdfb;
-      color: #111;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
-    }
-
-    input[type="text"]:focus,
-    textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
-    }
-
-    textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
-
     .small-note {
       margin-top: 10px;
       font-size: 0.9rem;
@@ -273,41 +230,15 @@
       text-align: center;
     }
 
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .gallery-item {
-      display: block;
-      background: #f7f2ee;
+    .info-box {
+      max-width: 620px;
+      margin: 0 auto;
+      background: #fffaf6;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      min-height: 140px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
-    }
-
-    .gallery-item img {
-      display: block;
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: #ece7e2;
-    }
-
-    .gallery-empty {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 0.96rem;
+      border-radius: 20px;
+      padding: 18px 16px;
+      color: #5d4b44;
+      line-height: 1.6;
     }
 
     .footer {
@@ -318,14 +249,6 @@
     }
 
     @media (min-width: 700px) {
-      .gallery-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .gallery-item img {
-        height: 210px;
-      }
-
       .hero-image {
         max-width: 340px;
       }
@@ -344,14 +267,14 @@
       <h1>Blair &amp; Emmett</h1>
       <div class="divider"></div>
       <p class="subtitle">
-        Share your memories from our special day. Upload your favourite photos, enjoy the wedding gallery,
-        and leave Blair &amp; Emmett a private message to treasure forever.
+        Share your memories from our special day. Upload your favourite photos, find your table,
+        browse the gallery, and sign the guest book.
       </p>
 
       <label for="photoUpload" class="file-label">📸 Upload Photos</label>
       <input id="photoUpload" type="file" accept="image/*" multiple />
 
-      <a href="#gallery" class="button secondary">🖼️ View Shared Gallery</a>
+      <a href="gallery.html" class="button secondary">🖼️ View Shared Gallery</a>
       <a href="seating.html" class="button secondary">📍 Find Your Table</a>
       <a href="guestbook.html" class="button secondary">📖 Guest Book</a>
 
@@ -361,40 +284,13 @@
       </div>
     </div>
 
-    <div class="section" id="gallery">
-      <h2>Wedding Gallery</h2>
-      <p>
-        Browse and save special moments shared by family and friends.
-      </p>
-      <button id="refreshGalleryBtn" class="secondary" type="button">Refresh Gallery</button>
-      <div id="galleryStatus" class="status"></div>
-      <div id="galleryGrid" class="gallery-grid"></div>
-      <div id="galleryEmpty" class="gallery-empty" style="display:none;">
-        No photos yet. Be the first to share a memory.
+    <div class="section">
+      <h2>Welcome</h2>
+      <div class="info-box">
+        Thank you for being part of Blair &amp; Emmett’s special day.
+        Use the buttons above to upload photos, find your table, view the shared gallery,
+        and leave a message in the guest book.
       </div>
-    </div>
-
-    <div class="section" id="message">
-      <h2>Private Message for Blair &amp; Emmett</h2>
-      <p>
-        Your message will be saved privately and emailed directly as a keepsake.
-      </p>
-
-      <form id="messageForm">
-        <div class="field">
-          <label class="text-label" for="guestName">Your name</label>
-          <input id="guestName" name="name" type="text" maxlength="120" placeholder="Enter your name" />
-        </div>
-
-        <div class="field">
-          <label class="text-label" for="guestMessage">Your message</label>
-          <textarea id="guestMessage" name="message" maxlength="5000" placeholder="Write your private message here..." required></textarea>
-        </div>
-
-        <button type="submit">💌 Send Private Message</button>
-      </form>
-
-      <div id="messageStatus" class="status"></div>
     </div>
 
     <div class="footer">
@@ -407,21 +303,9 @@
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
 
     const UPLOAD_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-upload`;
-    const MESSAGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-message`;
-    const PHOTOS_TABLE_URL = `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
 
     const photoUpload = document.getElementById("photoUpload");
     const uploadStatus = document.getElementById("uploadStatus");
-
-    const galleryGrid = document.getElementById("galleryGrid");
-    const galleryStatus = document.getElementById("galleryStatus");
-    const galleryEmpty = document.getElementById("galleryEmpty");
-    const refreshGalleryBtn = document.getElementById("refreshGalleryBtn");
-
-    const messageForm = document.getElementById("messageForm");
-    const guestName = document.getElementById("guestName");
-    const guestMessage = document.getElementById("guestMessage");
-    const messageStatus = document.getElementById("messageStatus");
 
     photoUpload.addEventListener("change", async (event) => {
       const files = Array.from(event.target.files || []);
@@ -460,100 +344,10 @@
 
         uploadStatus.textContent = "Photos uploaded successfully.";
         photoUpload.value = "";
-        await loadGallery();
       } catch (error) {
         uploadStatus.textContent = error.message || "Upload failed.";
       }
     });
-
-    messageForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const name = guestName.value.trim();
-      const message = guestMessage.value.trim();
-
-      if (!message) {
-        messageStatus.textContent = "Please write a message before sending.";
-        return;
-      }
-
-      messageStatus.textContent = "Sending your message...";
-
-      try {
-        const res = await fetch(MESSAGE_FUNCTION_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-          },
-          body: JSON.stringify({ name, message })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Message failed to send.");
-        }
-
-        messageStatus.textContent = "Your private message has been sent.";
-        messageForm.reset();
-      } catch (error) {
-        messageStatus.textContent = error.message || "Message failed to send.";
-      }
-    });
-
-    async function loadGallery() {
-      galleryStatus.textContent = "Loading gallery...";
-      galleryGrid.innerHTML = "";
-      galleryEmpty.style.display = "none";
-
-      try {
-        const res = await fetch(PHOTOS_TABLE_URL, {
-          method: "GET",
-          headers: {
-            apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || "Could not load gallery.");
-        }
-
-        if (!Array.isArray(data) || data.length === 0) {
-          galleryStatus.textContent = "";
-          galleryEmpty.style.display = "block";
-          return;
-        }
-
-        for (const item of data) {
-          if (!item.file_url) continue;
-
-          const link = document.createElement("a");
-          link.href = item.file_url;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          link.className = "gallery-item";
-
-          const img = document.createElement("img");
-          img.src = item.file_url;
-          img.alt = "Wedding photo";
-
-          link.appendChild(img);
-          galleryGrid.appendChild(link);
-        }
-
-        galleryStatus.textContent = "";
-      } catch (error) {
-        galleryStatus.textContent = error.message || "Could not load gallery.";
-      }
-    }
-
-    refreshGalleryBtn.addEventListener("click", loadGallery);
-    loadGallery();
   </script>
 </body>
 </html>
