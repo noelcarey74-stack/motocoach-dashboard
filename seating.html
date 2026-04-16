@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Your Table | Blair & Emmett Wedding</title>
+
+  <style>
+    :root {
+      --bg-top: #fbf7f3;
+      --bg-bottom: #f3ece5;
+      --card: rgba(255, 255, 255, 0.96);
+      --text: #2f2a28;
+      --muted: #7a6d66;
+      --accent: #c8a27a;
+      --button: #5f4a42;
+      --button-hover: #4d3b35;
+      --button-light: #fffaf6;
+      --border: #eadfce;
+      --shadow: 0 12px 34px rgba(76, 54, 41, 0.10);
+      --radius: 22px;
+      --max: 760px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background:
+        radial-gradient(circle at top left, rgba(214, 176, 150, 0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(196, 168, 139, 0.18), transparent 20%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text);
+      text-align: center;
+    }
+
+    .wrap {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 16px 56px;
+    }
+
+    .wrap::before,
+    .wrap::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .wrap::before {
+      top: 10px;
+      left: -10px;
+      background:
+        radial-gradient(circle at 35% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 58% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 72% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 28% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 58% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .wrap::after {
+      bottom: 10px;
+      right: -10px;
+      background:
+        radial-gradient(circle at 65% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 42% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 28% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 72% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 42% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 30px 20px 28px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "❀";
+      position: absolute;
+      font-size: 30px;
+      color: rgba(200, 162, 122, 0.28);
+      line-height: 1;
+    }
+
+    .hero::before {
+      top: 14px;
+      left: 18px;
+    }
+
+    .hero::after {
+      top: 14px;
+      right: 18px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      max-width: 240px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.3rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #5f463a;
+      letter-spacing: 0.2px;
+    }
+
+    .divider {
+      width: 90px;
+      height: 3px;
+      background: linear-gradient(90deg, #d8c59e 0%, #c8a27a 50%, #d8c59e 100%);
+      margin: 18px auto 18px;
+      border-radius: 999px;
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 560px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .button,
+    button {
+      display: inline-block;
+      min-width: 180px;
+      margin: 10px 6px 0;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 15px;
+      background: var(--button);
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+      box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
+    }
+
+    .button:hover,
+    button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .button.secondary {
+      background: var(--button-light);
+      color: #5d4b44;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: #fff;
+    }
+
+    .section {
+      padding: 26px 18px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      color: #5f463a;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .search-box {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .search-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fffdfb;
+      color: #111;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
+    }
+
+    .result-card {
+      display: none;
+      margin: 22px auto 0;
+      max-width: 520px;
+      background: #fffaf6;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    .result-card.show {
+      display: block;
+    }
+
+    .result-name {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .result-table {
+      margin: 0;
+      font-size: 2rem;
+      color: #5f463a;
+      font-weight: 700;
+    }
+
+    .result-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .not-found {
+      display: none;
+      margin: 18px auto 0;
+      max-width: 520px;
+      color: #7a6d66;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      background: #fffaf6;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .not-found.show {
+      display: block;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.95rem;
+      color: #8c7d75;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 700px) {
+      .hero-image {
+        max-width: 280px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+
+      .search-row {
+        flex-direction: row;
+      }
+
+      .search-row input {
+        flex: 1;
+      }
+
+      .search-row button {
+        min-width: 150px;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
+
+      <h1>Find Your Table</h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Welcome to Blair &amp; Emmett’s wedding. Enter your name below to find where you are seated.
+      </p>
+
+      <a href="wedding.html" class="button secondary">← Back to Wedding Page</a>
+    </div>
+
+    <div class="section">
+      <h2>Guest Seating</h2>
+      <p>Please type your first name and surname if needed.</p>
+
+      <div class="search-box">
+        <div class="search-row">
+          <input
+            id="guestSearch"
+            type="text"
+            placeholder="Enter your name..."
+            autocomplete="off"
+          />
+          <button id="searchBtn" type="button">Search</button>
+        </div>
+      </div>
+
+      <div id="resultCard" class="result-card">
+        <p id="resultName" class="result-name"></p>
+        <p id="resultTable" class="result-table"></p>
+        <div class="result-note">Please ask a member of staff if you need any help.</div>
+      </div>
+
+      <div id="notFound" class="not-found">
+        Sorry, we couldn’t find that name. Please try another spelling or ask a member of staff for help.
+      </div>
+    </div>
+
+    <div class="footer">
+      Thank you for celebrating with Blair &amp; Emmett.
+    </div>
+  </div>
+
+  <script>
+    const seatingPlan = [
+      { name: "Emmett", table: "Top Table" },
+      { name: "Blair", table: "Top Table" },
+      { name: "Noel", table: "Top Table" },
+      { name: "Carol", table: "Top Table" },
+      { name: "Jackie", table: "Top Table" },
+      { name: "Donna", table: "Top Table" },
+      { name: "Craig", table: "Top Table" },
+      { name: "Fr Sean", table: "Top Table" },
+
+      { name: "Hayley", table: "Table 1" },
+      { name: "Robbie", table: "Table 1" },
+      { name: "Lisa", table: "Table 1" },
+      { name: "James R", table: "Table 1" },
+      { name: "Leanne", table: "Table 1" },
+      { name: "Stephen C", table: "Table 1" },
+      { name: "Kevin B", table: "Table 1" },
+      { name: "Sara", table: "Table 1" },
+      { name: "Nathen", table: "Table 1" },
+      { name: "Kyle", table: "Table 1" },
+
+      { name: "Brian", table: "Table 2" },
+      { name: "Gillian", table: "Table 2" },
+      { name: "Kieran", table: "Table 2" },
+      { name: "Daniel", table: "Table 2" },
+      { name: "Lynsey", table: "Table 2" },
+      { name: "Kevin", table: "Table 2" },
+      { name: "Kalin", table: "Table 2" },
+      { name: "Adam", table: "Table 2" },
+      { name: "Conor O C", table: "Table 2" },
+      { name: "Steffan", table: "Table 2" },
+      { name: "Erin", table: "Table 2" },
+
+      { name: "Eileen", table: "Table 3" },
+      { name: "Dan", table: "Table 3" },
+      { name: "Chloe", table: "Table 3" },
+      { name: "Sion", table: "Table 3" },
+      { name: "Holly J", table: "Table 3" },
+      { name: "Robin", table: "Table 3" },
+      { name: "Marie", table: "Table 3" },
+      { name: "Mark", table: "Table 3" },
+      { name: "Priscila", table: "Table 3" },
+      { name: "Leo", table: "Table 3" },
+      { name: "John Joe", table: "Table 3" },
+      { name: "Nana Claire", table: "Table 3" },
+
+      { name: "Helen C", table: "Table 4" },
+      { name: "Lesley Ann", table: "Table 4" },
+      { name: "Anna", table: "Table 4" },
+      { name: "Timmy", table: "Table 4" },
+      { name: "Rosaire", table: "Table 4" },
+      { name: "Ryan", table: "Table 4" },
+      { name: "Cassie", table: "Table 4" },
+      { name: "Norma", table: "Table 4" },
+      { name: "Richard", table: "Table 4" },
+
+      { name: "Michael", table: "Table 5" },
+      { name: "Karen N", table: "Table 5" },
+      { name: "Noreen", table: "Table 5" },
+      { name: "Graham", table: "Table 5" },
+      { name: "Paddy", table: "Table 5" },
+      { name: "Mary", table: "Table 5" },
+      { name: "Holly M", table: "Table 5" },
+      { name: "Rosie C", table: "Table 5" },
+      { name: "Trevor", table: "Table 5" },
+      { name: "Stephan A", table: "Table 5" },
+
+      { name: "Helen L", table: "Table 6" },
+      { name: "Harley", table: "Table 6" },
+      { name: "Brian", table: "Table 6" },
+      { name: "Jay", table: "Table 6" },
+      { name: "Brooke", table: "Table 6" },
+      { name: "Leah", table: "Table 6" },
+      { name: "Colette", table: "Table 6" },
+      { name: "Claire", table: "Table 6" },
+      { name: "Cyril", table: "Table 6" },
+      { name: "Marion C", table: "Table 6" },
+      { name: "Laurie", table: "Table 6" },
+      { name: "Kenneth", table: "Table 6" },
+
+      { name: "Nana Eily", table: "Table 7" },
+      { name: "Ray", table: "Table 7" },
+      { name: "Marion R", table: "Table 7" },
+      { name: "Aisling", table: "Table 7" },
+      { name: "Georgie", table: "Table 7" },
+      { name: "Catherine", table: "Table 7" },
+      { name: "Sheila T", table: "Table 7" },
+      { name: "Rosie", table: "Table 7" },
+      { name: "George", table: "Table 7" },
+      { name: "Trish", table: "Table 7" },
+
+      { name: "Brook", table: "Table 8" },
+      { name: "Saidhbhe", table: "Table 8" },
+      { name: "Carley", table: "Table 8" },
+      { name: "Taylor", table: "Table 8" },
+      { name: "Lexi", table: "Table 8" },
+      { name: "Leona", table: "Table 8" },
+      { name: "Isuabel", table: "Table 8" },
+      { name: "Aoife", table: "Table 8" },
+      { name: "Sona", table: "Table 8" },
+
+      { name: "John", table: "Table 9" },
+      { name: "Janet", table: "Table 9" },
+      { name: "Sandra", table: "Table 9" },
+      { name: "Peter", table: "Table 9" },
+      { name: "Valarie", table: "Table 9" },
+      { name: "James", table: "Table 9" },
+      { name: "Marie", table: "Table 9" },
+      { name: "Tadgh", table: "Table 9" },
+      { name: "Kevin", table: "Table 9" },
+      { name: "Karen", table: "Table 9" },
+
+      { name: "Helena", table: "Table 10" },
+      { name: "Linda", table: "Table 10" },
+      { name: "Karen L", table: "Table 10" },
+      { name: "Steffi", table: "Table 10" },
+      { name: "Sonya", table: "Table 10" },
+      { name: "Carol", table: "Table 10" },
+      { name: "Pamela", table: "Table 10" },
+      { name: "Mable", table: "Table 10" },
+      { name: "James", table: "Table 10" },
+      { name: "Sheila", table: "Table 10" },
+      { name: "Donnacha", table: "Table 10" },
+
+      { name: "Paulric", table: "Table 11" },
+      { name: "Valarie G", table: "Table 11" },
+      { name: "Liam", table: "Table 11" },
+      { name: "Claire", table: "Table 11" },
+      { name: "Amy", table: "Table 11" },
+      { name: "Ger", table: "Table 11" },
+      { name: "Sinead", table: "Table 11" },
+
+      { name: "Calvin", table: "Table 12" },
+      { name: "Billy", table: "Table 12" },
+      { name: "Robert", table: "Table 12" },
+      { name: "Jayden", table: "Table 12" },
+      { name: "Chloe", table: "Table 12" },
+      { name: "Tyler", table: "Table 12" },
+      { name: "Michael O C", table: "Table 12" },
+
+      { name: "Sarah H", table: "Table 13" },
+      { name: "Anthony", table: "Table 13" },
+      { name: "Caroline", table: "Table 13" },
+      { name: "George", table: "Table 13" },
+      { name: "Jim", table: "Table 13" },
+      { name: "Michelle", table: "Table 13" },
+      { name: "Noel R", table: "Table 13" },
+      { name: "Susan", table: "Table 13" },
+      { name: "Shannon", table: "Table 13" },
+      { name: "Julie", table: "Table 13" },
+      { name: "Trez", table: "Table 13" },
+
+      { name: "Merli", table: "Table 14" },
+      { name: "Yeohan", table: "Table 14" },
+      { name: "Gabbi", table: "Table 14" },
+      { name: "Dita", table: "Table 14" },
+      { name: "Santi", table: "Table 14" },
+      { name: "Anna Maria", table: "Table 14" },
+      { name: "Noel Q", table: "Table 14" },
+
+      { name: "Faye", table: "Table 15" },
+      { name: "Caitlin", table: "Table 15" },
+      { name: "Nicole", table: "Table 15" },
+      { name: "Thomas", table: "Table 15" },
+      { name: "Keith", table: "Table 15" },
+      { name: "Michelle S", table: "Table 15" },
+      { name: "Alan H", table: "Table 15" },
+      { name: "Shane", table: "Table 15" },
+      { name: "Grace", table: "Table 15" },
+      { name: "Paul", table: "Table 15" },
+      { name: "Shauna", table: "Table 15" },
+
+      { name: "Kealan", table: "Table 16" },
+      { name: "Katelyn", table: "Table 16" },
+      { name: "Adam", table: "Table 16" },
+      { name: "Michelle H", table: "Table 16" },
+      { name: "Jamie", table: "Table 16" },
+      { name: "Michelle", table: "Table 16" },
+      { name: "John", table: "Table 16" },
+      { name: "Jade", table: "Table 16" },
+      { name: "Kevin", table: "Table 16" },
+      { name: "Loren", table: "Table 16" },
+      { name: "Conor", table: "Table 16" },
+      { name: "Joanne", table: "Table 16" },
+
+      { name: "Conor Mc C", table: "Table 17" },
+      { name: "Caroline R", table: "Table 17" },
+      { name: "Siobhan R", table: "Table 17" },
+      { name: "Siobhan", table: "Table 17" },
+      { name: "John H", table: "Table 17" },
+      { name: "John B", table: "Table 17" },
+      { name: "Vincent", table: "Table 17" },
+      { name: "Paul K", table: "Table 17" },
+      { name: "Tom", table: "Table 17" },
+      { name: "Brendan", table: "Table 17" },
+      { name: "Sharon", table: "Table 17" }
+      
+    ];
+
+    const searchInput = document.getElementById("guestSearch");
+    const searchBtn = document.getElementById("searchBtn");
+    const resultCard = document.getElementById("resultCard");
+    const resultName = document.getElementById("resultName");
+    const resultTable = document.getElementById("resultTable");
+    const notFound = document.getElementById("notFound");
+
+    function normalizeText(value) {
+      return value
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function searchGuest() {
+      const query = normalizeText(searchInput.value);
+
+      resultCard.classList.remove("show");
+      notFound.classList.remove("show");
+
+      if (!query) return;
+
+      const match = seatingPlan.find(guest =>
+        normalizeText(guest.name).includes(query)
+      );
+
+      if (match) {
+        resultName.textContent = match.name;
+        resultTable.textContent = match.table;
+        resultCard.classList.add("show");
+      } else {
+        notFound.classList.add("show");
+      }
+    }
+
+    searchBtn.addEventListener("click", searchGuest);
+
+    searchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchGuest();
+      }
+    });
+  </script>
+</body>
+</html>
+ after I put that in can I check it before it goes live.
