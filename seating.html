@@ -294,12 +294,13 @@
     .result-card {
       display: none;
       margin: 22px auto 0;
-      max-width: 520px;
+      max-width: 560px;
       background: #fffaf6;
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 22px 18px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      text-align: left;
     }
 
     .result-card.show {
@@ -310,6 +311,7 @@
       margin: 0 0 8px;
       font-size: 1.05rem;
       color: var(--muted);
+      text-align: center;
     }
 
     .result-table {
@@ -317,6 +319,7 @@
       font-size: 2rem;
       color: #5f463a;
       font-weight: 700;
+      text-align: center;
     }
 
     .result-note {
@@ -324,6 +327,36 @@
       color: var(--muted);
       font-size: 0.95rem;
       line-height: 1.5;
+      text-align: center;
+    }
+
+    .table-guests {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .table-guests h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: #5f463a;
+      text-align: center;
+    }
+
+    .guest-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .guest-pill {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      color: #5d4b44;
     }
 
     .not-found {
@@ -414,6 +447,11 @@
         <p id="resultName" class="result-name"></p>
         <p id="resultTable" class="result-table"></p>
         <div class="result-note">Please ask a member of staff if you need any help.</div>
+
+        <div class="table-guests">
+          <h3>Also seated at your table</h3>
+          <div id="tableGuests" class="guest-list"></div>
+        </div>
       </div>
 
       <div id="notFound" class="not-found">
@@ -617,7 +655,6 @@
       { name: "Siobhan R", table: "Table 17" },
       { name: "Siobhan", table: "Table 17" },
       { name: "John H", table: "Table 17" },
-       { name: "John B", table: "Table 17" },
       { name: "Vincent", table: "Table 17" },
       { name: "Paul K", table: "Table 17" },
       { name: "Tom", table: "Table 17" },
@@ -631,9 +668,9 @@
     const resultCard = document.getElementById("resultCard");
     const resultName = document.getElementById("resultName");
     const resultTable = document.getElementById("resultTable");
+    const tableGuests = document.getElementById("tableGuests");
     const notFound = document.getElementById("notFound");
 
-    let currentMatches = [];
     let activeIndex = -1;
 
     function normalizeText(value) {
@@ -644,9 +681,24 @@
         .trim();
     }
 
+    function getTableGuests(tableName) {
+      return seatingPlan.filter(guest => guest.table === tableName);
+    }
+
     function showGuest(guest) {
       resultName.textContent = guest.name;
-      resultTable.textContent = guest.table;
+      resultTable.textContent = `You are seated at ${guest.table}`;
+
+      const guestsAtTable = getTableGuests(guest.table);
+      tableGuests.innerHTML = "";
+
+      guestsAtTable.forEach(person => {
+        const pill = document.createElement("span");
+        pill.className = "guest-pill";
+        pill.textContent = person.name;
+        tableGuests.appendChild(pill);
+      });
+
       resultCard.classList.add("show");
       notFound.classList.remove("show");
       suggestions.classList.remove("show");
@@ -666,7 +718,7 @@
         return;
       }
 
-      matches.forEach((guest, index) => {
+      matches.forEach((guest) => {
         const item = document.createElement("button");
         item.type = "button";
         item.className = "suggestion-item";
@@ -693,15 +745,14 @@
       if (!query) {
         suggestions.classList.remove("show");
         suggestions.innerHTML = "";
-        currentMatches = [];
         return;
       }
 
-      currentMatches = seatingPlan.filter(guest =>
+      const matches = seatingPlan.filter(guest =>
         normalizeText(guest.name).includes(query)
       );
 
-      renderSuggestions(currentMatches.slice(0, 8));
+      renderSuggestions(matches.slice(0, 8));
     }
 
     function highlightActiveSuggestion() {
