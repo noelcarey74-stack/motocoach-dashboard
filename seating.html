@@ -205,8 +205,9 @@
     }
 
     .search-box {
-      max-width: 520px;
+      max-width: 560px;
       margin: 0 auto;
+      position: relative;
     }
 
     .search-row {
@@ -231,6 +232,63 @@
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 58px;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      background: #fffdfb;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.10);
+      overflow: hidden;
+      display: none;
+      text-align: left;
+    }
+
+    .suggestions.show {
+      display: block;
+    }
+
+    .suggestion-item {
+      width: 100%;
+      border: none;
+      background: #fffdfb;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: #3c302c;
+      border-bottom: 1px solid #f1e7dc;
+      box-shadow: none;
+      margin: 0;
+      border-radius: 0;
+      min-width: auto;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-item:hover,
+    .suggestion-item.active {
+      background: #f8efe7;
+      transform: none;
+    }
+
+    .suggestion-name {
+      display: block;
+      font-weight: 700;
+    }
+
+    .suggestion-table {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 3px;
     }
 
     .result-card {
@@ -313,6 +371,10 @@
         min-width: 150px;
         margin: 0;
       }
+
+      .suggestions {
+        top: 60px;
+      }
     }
   </style>
 </head>
@@ -324,7 +386,7 @@
       <h1>Find Your Table</h1>
       <div class="divider"></div>
       <p class="subtitle">
-        Welcome to Blair &amp; Emmett’s wedding. Enter your name below to find where you are seated.
+        Welcome to Blair &amp; Emmett’s wedding. Start typing your name below and choose your name from the list.
       </p>
 
       <a href="wedding.html" class="button secondary">← Back to Wedding Page</a>
@@ -339,11 +401,13 @@
           <input
             id="guestSearch"
             type="text"
-            placeholder="Enter your name..."
+            placeholder="Start typing your name..."
             autocomplete="off"
           />
           <button id="searchBtn" type="button">Search</button>
         </div>
+
+        <div id="suggestions" class="suggestions"></div>
       </div>
 
       <div id="resultCard" class="result-card">
@@ -553,21 +617,23 @@
       { name: "Siobhan R", table: "Table 17" },
       { name: "Siobhan", table: "Table 17" },
       { name: "John H", table: "Table 17" },
-      { name: "John B", table: "Table 17" },
       { name: "Vincent", table: "Table 17" },
       { name: "Paul K", table: "Table 17" },
       { name: "Tom", table: "Table 17" },
       { name: "Brendan", table: "Table 17" },
       { name: "Sharon", table: "Table 17" }
-      
     ];
 
     const searchInput = document.getElementById("guestSearch");
     const searchBtn = document.getElementById("searchBtn");
+    const suggestions = document.getElementById("suggestions");
     const resultCard = document.getElementById("resultCard");
     const resultName = document.getElementById("resultName");
     const resultTable = document.getElementById("resultTable");
     const notFound = document.getElementById("notFound");
+
+    let currentMatches = [];
+    let activeIndex = -1;
 
     function normalizeText(value) {
       return value
@@ -577,36 +643,144 @@
         .trim();
     }
 
-    function searchGuest() {
-      const query = normalizeText(searchInput.value);
+    function showGuest(guest) {
+      resultName.textContent = guest.name;
+      resultTable.textContent = guest.table;
+      resultCard.classList.add("show");
+      notFound.classList.remove("show");
+      suggestions.classList.remove("show");
+    }
 
+    function clearResults() {
       resultCard.classList.remove("show");
       notFound.classList.remove("show");
+    }
 
-      if (!query) return;
+    function renderSuggestions(matches) {
+      suggestions.innerHTML = "";
+      activeIndex = -1;
 
-      const match = seatingPlan.find(guest =>
+      if (!matches.length) {
+        suggestions.classList.remove("show");
+        return;
+      }
+
+      matches.forEach((guest, index) => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "suggestion-item";
+        item.innerHTML = `
+          <span class="suggestion-name">${guest.name}</span>
+          <span class="suggestion-table">${guest.table}</span>
+        `;
+
+        item.addEventListener("click", () => {
+          searchInput.value = guest.name;
+          showGuest(guest);
+        });
+
+        suggestions.appendChild(item);
+      });
+
+      suggestions.classList.add("show");
+    }
+
+    function updateSuggestions() {
+      const query = normalizeText(searchInput.value);
+      clearResults();
+
+      if (!query) {
+        suggestions.classList.remove("show");
+        suggestions.innerHTML = "";
+        currentMatches = [];
+        return;
+      }
+
+      currentMatches = seatingPlan.filter(guest =>
         normalizeText(guest.name).includes(query)
       );
 
-      if (match) {
-        resultName.textContent = match.name;
-        resultTable.textContent = match.table;
-        resultCard.classList.add("show");
+      renderSuggestions(currentMatches.slice(0, 8));
+    }
+
+    function highlightActiveSuggestion() {
+      const items = suggestions.querySelectorAll(".suggestion-item");
+      items.forEach((item, index) => {
+        item.classList.toggle("active", index === activeIndex);
+      });
+    }
+
+    function searchGuest() {
+      const query = normalizeText(searchInput.value);
+      clearResults();
+
+      if (!query) {
+        suggestions.classList.remove("show");
+        return;
+      }
+
+      const exact = seatingPlan.find(
+        guest => normalizeText(guest.name) === query
+      );
+
+      if (exact) {
+        showGuest(exact);
+        return;
+      }
+
+      const matches = seatingPlan.filter(guest =>
+        normalizeText(guest.name).includes(query)
+      );
+
+      if (matches.length === 1) {
+        showGuest(matches[0]);
+      } else if (matches.length > 1) {
+        renderSuggestions(matches.slice(0, 8));
       } else {
+        suggestions.classList.remove("show");
         notFound.classList.add("show");
       }
     }
 
-    searchBtn.addEventListener("click", searchGuest);
+    searchInput.addEventListener("input", updateSuggestions);
 
     searchInput.addEventListener("keydown", (event) => {
+      const items = suggestions.querySelectorAll(".suggestion-item");
+
+      if (event.key === "ArrowDown" && items.length) {
+        event.preventDefault();
+        activeIndex = (activeIndex + 1) % items.length;
+        highlightActiveSuggestion();
+      }
+
+      if (event.key === "ArrowUp" && items.length) {
+        event.preventDefault();
+        activeIndex = (activeIndex - 1 + items.length) % items.length;
+        highlightActiveSuggestion();
+      }
+
       if (event.key === "Enter") {
         event.preventDefault();
-        searchGuest();
+
+        if (activeIndex >= 0 && items[activeIndex]) {
+          items[activeIndex].click();
+        } else {
+          searchGuest();
+        }
+      }
+
+      if (event.key === "Escape") {
+        suggestions.classList.remove("show");
+      }
+    });
+
+    searchBtn.addEventListener("click", searchGuest);
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".search-box")) {
+        suggestions.classList.remove("show");
       }
     });
   </script>
 </body>
 </html>
- after I put that in can I check it before it goes live.
