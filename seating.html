@@ -234,19 +234,20 @@
       box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
     }
 
+    /* MOBILE-FRIENDLY SUGGESTIONS */
     .suggestions {
-      position: absolute;
-      top: 58px;
-      left: 0;
-      right: 0;
+      position: static;
+      margin-top: 10px;
       z-index: 5;
       background: #fffdfb;
       border: 1px solid var(--border);
       border-radius: 16px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.10);
-      overflow: hidden;
       display: none;
       text-align: left;
+      max-height: 260px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .suggestions.show {
@@ -383,6 +384,29 @@
       line-height: 1.6;
     }
 
+    @media (max-width: 699px) {
+      .wrap {
+        padding-top: 18px;
+      }
+
+      .hero {
+        padding: 24px 16px 24px;
+      }
+
+      .search-box {
+        margin-top: 8px;
+      }
+
+      .search-row button {
+        width: 100%;
+        margin: 0;
+      }
+
+      .suggestions {
+        max-height: 220px;
+      }
+    }
+
     @media (min-width: 700px) {
       .hero-image {
         max-width: 280px;
@@ -403,10 +427,6 @@
       .search-row button {
         min-width: 150px;
         margin: 0;
-      }
-
-      .suggestions {
-        top: 60px;
       }
     }
   </style>
@@ -466,10 +486,10 @@
 
   <script>
     const seatingPlan = [
-      { name: "Emmett", table: "Top Table" },
+      { name: "Emmett Sheehan", table: "Top Table" },
       { name: "Blair", table: "Top Table" },
-      { name: "Noel", table: "Top Table" },
-      { name: "Carol", table: "Top Table" },
+      { name: "Noel Carey", table: "Top Table" },
+      { name: "Carol Carey", table: "Top Table" },
       { name: "Jackie", table: "Top Table" },
       { name: "Donna", table: "Top Table" },
       { name: "Craig", table: "Top Table" },
@@ -498,8 +518,8 @@
       { name: "Steffan", table: "Table 2" },
       { name: "Erin", table: "Table 2" },
 
-      { name: "Eileen", table: "Table 3" },
-      { name: "Dan", table: "Table 3" },
+      { name: "Eileen Walsh", table: "Table 3" },
+      { name: "Dan Walsh", table: "Table 3" },
       { name: "Chloe", table: "Table 3" },
       { name: "Sion", table: "Table 3" },
       { name: "Holly J", table: "Table 3" },
@@ -521,27 +541,27 @@
       { name: "Norma", table: "Table 4" },
       { name: "Richard", table: "Table 4" },
 
-      { name: "Michael", table: "Table 5" },
-      { name: "Karen N", table: "Table 5" },
-      { name: "Noreen", table: "Table 5" },
-      { name: "Graham", table: "Table 5" },
-      { name: "Paddy", table: "Table 5" },
-      { name: "Mary", table: "Table 5" },
-      { name: "Holly M", table: "Table 5" },
-      { name: "Rosie C", table: "Table 5" },
-      { name: "Trevor", table: "Table 5" },
-      { name: "Stephan A", table: "Table 5" },
+      { name: "Michael Carey", table: "Table 5" },
+      { name: "Karen Nash", table: "Table 5" },
+      { name: "Noreen Walsh", table: "Table 5" },
+      { name: "Graham Walsh", table: "Table 5" },
+      { name: "Paddy O'Riordan", table: "Table 5" },
+      { name: "Mary O'Riordan", table: "Table 5" },
+      { name: "Holly Murphy", table: "Table 5" },
+      { name: "Rosie Carey", table: "Table 5" },
+      { name: "Trevor Ahern", table: "Table 5" },
+      { name: "Stephan Ahern", table: "Table 5" },
 
-      { name: "Helen L", table: "Table 6" },
-      { name: "Harley", table: "Table 6" },
-      { name: "Brian", table: "Table 6" },
-      { name: "Jay", table: "Table 6" },
+      { name: "Helen O'Halloran", table: "Table 6" },
+      { name: "Harley O'Halloran", table: "Table 6" },
+      { name: "Brian O'Halloran", table: "Table 6" },
+      { name: "Jay O'Halloran", table: "Table 6" },
       { name: "Brooke", table: "Table 6" },
       { name: "Leah", table: "Table 6" },
       { name: "Colette", table: "Table 6" },
       { name: "Claire", table: "Table 6" },
-      { name: "Cyril", table: "Table 6" },
-      { name: "Marion C", table: "Table 6" },
+      { name: "Cyril Carey", table: "Table 6" },
+      { name: "Marion Carey", table: "Table 6" },
       { name: "Laurie", table: "Table 6" },
       { name: "Kenneth", table: "Table 6" },
 
@@ -556,8 +576,8 @@
       { name: "George", table: "Table 7" },
       { name: "Trish", table: "Table 7" },
 
-      { name: "Brook", table: "Table 8" },
-      { name: "Saidhbhe", table: "Table 8" },
+      { name: "Brook Carey", table: "Table 8" },
+      { name: "Saidhbhe Sheehan", table: "Table 8" },
       { name: "Carley", table: "Table 8" },
       { name: "Taylor", table: "Table 8" },
       { name: "Lexi", table: "Table 8" },
@@ -650,16 +670,17 @@
       { name: "Conor", table: "Table 16" },
       { name: "Joanne", table: "Table 16" },
 
-      { name: "Conor Mc C", table: "Table 17" },
-      { name: "Caroline R", table: "Table 17" },
-      { name: "Siobhan R", table: "Table 17" },
-      { name: "Siobhan", table: "Table 17" },
-      { name: "John H", table: "Table 17" },
-      { name: "Vincent", table: "Table 17" },
-      { name: "Paul K", table: "Table 17" },
-      { name: "Tom", table: "Table 17" },
-      { name: "Brendan", table: "Table 17" },
-      { name: "Sharon", table: "Table 17" }
+      { name: "Conor Mc Carthy", table: "Table 17" },
+      { name: "Caroline O'Mahony", table: "Table 17" },
+      { name: "Siobhan Donnelly", table: "Table 17" },
+      { name: "Siobhan Galvin", table: "Table 17" },
+      { name: "John Hurley", table: "Table 17" },
+      { name: "John Buckley", table: "Table 17" },
+      { name: "Vincent Carroll", table: "Table 17" },
+      { name: "Paul Kennedy", table: "Table 17" },
+      { name: "Tom Fahey", table: "Table 17" },
+      { name: "Brendan O'Neill", table: "Table 17" },
+      { name: "Sharon Seymour", table: "Table 17" }
     ];
 
     const searchInput = document.getElementById("guestSearch");
@@ -795,6 +816,15 @@
     }
 
     searchInput.addEventListener("input", updateSuggestions);
+
+    searchInput.addEventListener("focus", () => {
+      setTimeout(() => {
+        searchInput.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }, 250);
+    });
 
     searchInput.addEventListener("keydown", (event) => {
       const items = suggestions.querySelectorAll(".suggestion-item");
