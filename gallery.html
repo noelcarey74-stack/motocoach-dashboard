@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Gallery | Blair & Emmett</title>
+
+  <style>
+    :root {
+      --bg-top: #fbf7f3;
+      --bg-bottom: #f3ece5;
+      --card: rgba(255, 255, 255, 0.96);
+      --text: #2f2a28;
+      --muted: #7a6d66;
+      --accent: #c8a27a;
+      --button: #5f4a42;
+      --button-hover: #4d3b35;
+      --button-light: #fffaf6;
+      --border: #eadfce;
+      --shadow: 0 12px 34px rgba(76, 54, 41, 0.10);
+      --max: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background:
+        radial-gradient(circle at top left, rgba(214, 176, 150, 0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(196, 168, 139, 0.18), transparent 20%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text);
+      text-align: center;
+    }
+
+    .wrap {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 16px 56px;
+    }
+
+    .wrap::before,
+    .wrap::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .wrap::before {
+      top: 10px;
+      left: -10px;
+      background:
+        radial-gradient(circle at 35% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 58% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 72% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 28% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 58% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .wrap::after {
+      bottom: 10px;
+      right: -10px;
+      background:
+        radial-gradient(circle at 65% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 42% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 28% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 72% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 42% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 30px 20px 28px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "❀";
+      position: absolute;
+      font-size: 30px;
+      color: rgba(200, 162, 122, 0.28);
+      line-height: 1;
+    }
+
+    .hero::before {
+      top: 14px;
+      left: 18px;
+    }
+
+    .hero::after {
+      top: 14px;
+      right: 18px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto 22px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.35rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #5f463a;
+      letter-spacing: 0.2px;
+    }
+
+    .divider {
+      width: 90px;
+      height: 3px;
+      background: linear-gradient(90deg, #d8c59e 0%, #c8a27a 50%, #d8c59e 100%);
+      margin: 18px auto 18px;
+      border-radius: 999px;
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 620px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .button,
+    button {
+      display: inline-block;
+      min-width: 180px;
+      margin: 10px 6px 0;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 15px;
+      background: var(--button);
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+      box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
+    }
+
+    .button:hover,
+    button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .button.secondary,
+    button.secondary {
+      background: var(--button-light);
+      color: #5d4b44;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover,
+    button.secondary:hover {
+      background: #fff;
+    }
+
+    .section {
+      padding: 26px 18px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      color: #5f463a;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .status {
+      margin: 14px auto 4px;
+      min-height: 24px;
+      max-width: 520px;
+      font-size: 0.96rem;
+      color: var(--muted);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .gallery-item {
+      display: block;
+      background: #f7f2ee;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      text-decoration: none;
+      min-height: 140px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #ece7e2;
+    }
+
+    .gallery-empty {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(25, 20, 18, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 95vw;
+      max-height: 90vh;
+    }
+
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 88vh;
+      display: block;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      background: #fff;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      color: #333;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.95rem;
+      color: #8c7d75;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 700px) {
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gallery-item img {
+        height: 220px;
+      }
+
+      .hero-image {
+        max-width: 300px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+    }
+
+    @media (min-width: 980px) {
+      .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
+
+      <h1>Wedding Gallery</h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Browse and enjoy the special moments shared by family and friends throughout Blair &amp; Emmett’s day.
+      </p>
+
+      <a href="wedding.html" class="button secondary">← Back to Wedding Page</a>
+      <button id="refreshGalleryBtn" class="button secondary" type="button">Refresh Gallery</button>
+    </div>
+
+    <div class="section">
+      <h2>Shared Photos</h2>
+      <p>Tap any photo to view it larger.</p>
+
+      <div id="galleryStatus" class="status"></div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div id="galleryEmpty" class="gallery-empty" style="display:none;">
+        No photos yet. Be the first to share a memory.
+      </div>
+    </div>
+
+    <div class="footer">
+      Thank you for sharing the day with Blair &amp; Emmett.
+    </div>
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <button id="lightboxClose" class="lightbox-close" aria-label="Close photo">✕</button>
+      <img id="lightboxImage" src="" alt="Wedding photo large view" />
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
+
+    const PHOTOS_TABLE_URL = `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
+
+    const galleryGrid = document.getElementById("galleryGrid");
+    const galleryStatus = document.getElementById("galleryStatus");
+    const galleryEmpty = document.getElementById("galleryEmpty");
+    const refreshGalleryBtn = document.getElementById("refreshGalleryBtn");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    function openLightbox(src) {
+      lightboxImage.src = src;
+      lightbox.classList.add("show");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+    }
+
+    async function loadGallery() {
+      galleryStatus.textContent = "Loading gallery...";
+      galleryGrid.innerHTML = "";
+      galleryEmpty.style.display = "none";
+
+      try {
+        const res = await fetch(PHOTOS_TABLE_URL, {
+          method: "GET",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Could not load gallery.");
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          galleryStatus.textContent = "";
+          galleryEmpty.style.display = "block";
+          return;
+        }
+
+        data.forEach((item) => {
+          if (!item.file_url) return;
+
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "gallery-item";
+
+          const img = document.createElement("img");
+          img.src = item.file_url;
+          img.alt = "Wedding photo";
+
+          card.appendChild(img);
+          card.addEventListener("click", () => openLightbox(item.file_url));
+          galleryGrid.appendChild(card);
+        });
+
+        galleryStatus.textContent = "";
+      } catch (error) {
+        galleryStatus.textContent = error.message || "Could not load gallery.";
+      }
+    }
+
+    refreshGalleryBtn.addEventListener("click", loadGallery);
+    lightboxClose.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+    });
+
+    loadGallery();
+  </script>
+</body>
+</html>
