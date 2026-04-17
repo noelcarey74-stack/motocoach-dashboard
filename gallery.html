@@ -164,7 +164,7 @@
       color: #fff;
       cursor: pointer;
       text-decoration: none;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
       font-family: inherit;
       box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
     }
@@ -186,6 +186,12 @@
     .button.secondary:hover,
     button.secondary:hover {
       background: #fff;
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
     }
 
     .section {
@@ -222,6 +228,8 @@
 
     .gallery-item {
       display: block;
+      width: 100%;
+      padding: 0;
       background: #f7f2ee;
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -230,6 +238,7 @@
       min-height: 140px;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
       box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      appearance: none;
     }
 
     .gallery-item:hover {
@@ -243,6 +252,18 @@
       height: 180px;
       object-fit: cover;
       background: #ece7e2;
+    }
+
+    .gallery-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      padding: 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      background: #f4efea;
     }
 
     .gallery-empty {
@@ -308,8 +329,10 @@
         grid-template-columns: repeat(3, 1fr);
       }
 
-      .gallery-item img {
+      .gallery-item img,
+      .gallery-fallback {
         height: 220px;
+        min-height: 220px;
       }
 
       .hero-image {
@@ -370,7 +393,8 @@
     const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
 
-    const PHOTOS_TABLE_URL = `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
+    const PHOTOS_TABLE_URL =
+      `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
 
     const galleryGrid = document.getElementById("galleryGrid");
     const galleryStatus = document.getElementById("galleryStatus");
@@ -382,6 +406,7 @@
     const lightboxClose = document.getElementById("lightboxClose");
 
     function openLightbox(src) {
+      if (!src) return;
       lightboxImage.src = src;
       lightbox.classList.add("show");
       lightbox.setAttribute("aria-hidden", "false");
@@ -393,24 +418,63 @@
       lightboxImage.src = "";
     }
 
+    function createFallbackCard() {
+      const fallback = document.createElement("div");
+      fallback.className = "gallery-fallback";
+      fallback.textContent = "Photo unavailable";
+      return fallback;
+    }
+
+    function buildPhotoCard(fileUrl) {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "gallery-item";
+      card.setAttribute("aria-label", "Open wedding photo");
+
+      const img = document.createElement("img");
+      img.src = fileUrl;
+      img.alt = "Wedding photo";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.referrerPolicy = "no-referrer";
+
+      img.addEventListener("error", () => {
+        card.innerHTML = "";
+        card.appendChild(createFallbackCard());
+      });
+
+      card.appendChild(img);
+      card.addEventListener("click", () => openLightbox(fileUrl));
+
+      return card;
+    }
+
     async function loadGallery() {
       galleryStatus.textContent = "Loading gallery...";
       galleryGrid.innerHTML = "";
       galleryEmpty.style.display = "none";
+      refreshGalleryBtn.disabled = true;
 
       try {
         const res = await fetch(PHOTOS_TABLE_URL, {
           method: "GET",
           headers: {
             apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-          }
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            Accept: "application/json"
+          },
+          cache: "no-store"
         });
 
-        const data = await res.json();
+        let data;
+        try {
+          data = await res.json();
+        } catch {
+          throw new Error("Could not read gallery data.");
+        }
 
         if (!res.ok) {
-          throw new Error(data.message || "Could not load gallery.");
+          throw new Error(data?.message || data?.error || "Could not load gallery.");
         }
 
         if (!Array.isArray(data) || data.length === 0) {
@@ -419,25 +483,25 @@
           return;
         }
 
-        data.forEach((item) => {
-          if (!item.file_url) return;
+        const validPhotos = data.filter((item) => item && item.file_url);
 
-          const card = document.createElement("button");
-          card.type = "button";
-          card.className = "gallery-item";
+        if (validPhotos.length === 0) {
+          galleryStatus.textContent = "";
+          galleryEmpty.style.display = "block";
+          return;
+        }
 
-          const img = document.createElement("img");
-          img.src = item.file_url;
-          img.alt = "Wedding photo";
-
-          card.appendChild(img);
-          card.addEventListener("click", () => openLightbox(item.file_url));
+        validPhotos.forEach((item) => {
+          const card = buildPhotoCard(item.file_url);
           galleryGrid.appendChild(card);
         });
 
         galleryStatus.textContent = "";
       } catch (error) {
-        galleryStatus.textContent = error.message || "Could not load gallery.";
+        galleryStatus.textContent =
+          error && error.message ? error.message : "Could not load gallery.";
+      } finally {
+        refreshGalleryBtn.disabled = false;
       }
     }
 
