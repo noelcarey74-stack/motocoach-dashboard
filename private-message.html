@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Message | Blair & Emmett Wedding</title>
+
+  <style>
+    :root {
+      --bg-top: #fbf7f3;
+      --bg-bottom: #f3ece5;
+      --card: rgba(255, 255, 255, 0.96);
+      --text: #2f2a28;
+      --muted: #7a6d66;
+      --accent: #c8a27a;
+      --button: #5f4a42;
+      --button-hover: #4d3b35;
+      --button-light: #fffaf6;
+      --border: #eadfce;
+      --shadow: 0 12px 34px rgba(76, 54, 41, 0.10);
+      --max: 760px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background:
+        radial-gradient(circle at top left, rgba(214, 176, 150, 0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(196, 168, 139, 0.18), transparent 20%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text);
+      text-align: center;
+    }
+
+    .wrap {
+      position: relative;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 16px 56px;
+    }
+
+    .wrap::before,
+    .wrap::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .wrap::before {
+      top: 10px;
+      left: -10px;
+      background:
+        radial-gradient(circle at 35% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 58% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 72% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 28% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 58% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .wrap::after {
+      bottom: 10px;
+      right: -10px;
+      background:
+        radial-gradient(circle at 65% 35%, #d9b7b0 0 14px, transparent 15px),
+        radial-gradient(circle at 42% 22%, #e6c8ba 0 12px, transparent 13px),
+        radial-gradient(circle at 28% 46%, #d8c59e 0 10px, transparent 11px),
+        radial-gradient(circle at 72% 64%, #c9d6be 0 10px, transparent 11px),
+        radial-gradient(circle at 42% 70%, #ead7ca 0 14px, transparent 15px);
+      filter: blur(1px);
+      border-radius: 50%;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 30px 20px 28px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "❀";
+      position: absolute;
+      font-size: 30px;
+      color: rgba(200, 162, 122, 0.28);
+      line-height: 1;
+    }
+
+    .hero::before {
+      top: 14px;
+      left: 18px;
+    }
+
+    .hero::after {
+      top: 14px;
+      right: 18px;
+    }
+
+    .hero-image {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto 22px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.35rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #5f463a;
+      letter-spacing: 0.2px;
+    }
+
+    .divider {
+      width: 90px;
+      height: 3px;
+      background: linear-gradient(90deg, #d8c59e 0%, #c8a27a 50%, #d8c59e 100%);
+      margin: 18px auto 18px;
+      border-radius: 999px;
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 560px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .button,
+    button {
+      display: inline-block;
+      min-width: 180px;
+      margin: 10px 6px 0;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 15px;
+      background: var(--button);
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-family: inherit;
+      box-shadow: 0 8px 18px rgba(95, 74, 66, 0.16);
+    }
+
+    .button:hover,
+    button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    .button.secondary {
+      background: var(--button-light);
+      color: #5d4b44;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: #fff;
+    }
+
+    .section {
+      padding: 26px 18px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      color: #5f463a;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    form {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.96rem;
+      color: #5d4b44;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fffdfb;
+      color: #111;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.15);
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .status {
+      margin: 14px auto 4px;
+      min-height: 24px;
+      max-width: 520px;
+      font-size: 0.96rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 0.95rem;
+      color: #8c7d75;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 700px) {
+      .hero-image {
+        max-width: 300px;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <img src="blair-emmett.jpg" alt="Blair and Emmett" class="hero-image" />
+
+      <h1>Private Message</h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Send a personal message directly to Blair &amp; Emmett.
+        Your message will be delivered privately by email.
+      </p>
+
+      <a href="wedding.html" class="button secondary">← Back to Wedding Page</a>
+    </div>
+
+    <div class="section">
+      <h2>Send a Private Message</h2>
+      <p>
+        Write something personal, thoughtful, or heartfelt for the couple.
+      </p>
+
+      <form id="messageForm">
+        <div class="field">
+          <label for="guestName">Your name</label>
+          <input
+            id="guestName"
+            name="name"
+            type="text"
+            maxlength="120"
+            placeholder="Enter your name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="guestMessage">Your message</label>
+          <textarea
+            id="guestMessage"
+            name="message"
+            maxlength="5000"
+            placeholder="Write your private message here..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit">💌 Send Private Message</button>
+      </form>
+
+      <div id="messageStatus" class="status"></div>
+
+      <div class="small-note">
+        These messages will be kept as a special memory from the day ❤️
+      </div>
+    </div>
+
+    <div class="footer">
+      Thank you for celebrating with Blair &amp; Emmett.<br><br>
+      <span style="font-size:0.85rem; opacity:0.7;">
+        Designed by Noel Carey
+      </span>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
+
+    const MESSAGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/wedding-message`;
+
+    const messageForm = document.getElementById("messageForm");
+    const guestName = document.getElementById("guestName");
+    const guestMessage = document.getElementById("guestMessage");
+    const messageStatus = document.getElementById("messageStatus");
+
+    messageForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const name = guestName.value.trim();
+      const message = guestMessage.value.trim();
+
+      if (!message) {
+        messageStatus.textContent = "Please write a message before sending.";
+        return;
+      }
+
+      messageStatus.textContent = "Sending your message...";
+
+      try {
+        const res = await fetch(MESSAGE_FUNCTION_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ name, message })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Message failed to send.");
+        }
+
+        messageStatus.textContent = "Your private message has been sent 💖";
+        messageForm.reset();
+      } catch (error) {
+        messageStatus.textContent = error.message || "Message failed to send.";
+      }
+    });
+  </script>
+</body>
+</html>
