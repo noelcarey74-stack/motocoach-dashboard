@@ -391,7 +391,7 @@
 
   <script>
     const SUPABASE_URL = "https://skndrknemoubcvilmiks.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrbmRya25lbW91YmN2aWxtaWtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTgxMzcsImV4cCI6MjA3ODg5NDEzN30.C19bxtCeYjsUBe2dxij_utP8oE6YHMxjoP3x9ZTPMO0";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_REAL_ANON_KEY_HERE";
 
     const PHOTOS_TABLE_URL =
       `${SUPABASE_URL}/rest/v1/wedding_photos?select=file_url,uploaded_at&order=uploaded_at.desc`;
@@ -405,9 +405,15 @@
     const lightboxImage = document.getElementById("lightboxImage");
     const lightboxClose = document.getElementById("lightboxClose");
 
+    function withCacheBust(url) {
+      if (!url) return "";
+      const separator = url.includes("?") ? "&" : "?";
+      return `${url}${separator}t=${Date.now()}`;
+    }
+
     function openLightbox(src) {
       if (!src) return;
-      lightboxImage.src = src;
+      lightboxImage.src = withCacheBust(src);
       lightbox.classList.add("show");
       lightbox.setAttribute("aria-hidden", "false");
     }
@@ -432,7 +438,7 @@
       card.setAttribute("aria-label", "Open wedding photo");
 
       const img = document.createElement("img");
-      img.src = fileUrl;
+      img.src = withCacheBust(fileUrl);
       img.alt = "Wedding photo";
       img.loading = "lazy";
       img.decoding = "async";
@@ -449,6 +455,51 @@
       return card;
     }
 
+    function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+      return new Promise((resolve, reject) => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => {
+          controller.abort();
+          reject(new Error("Gallery request timed out. Please try refresh."));
+        }, timeoutMs);
+
+        fetch(url, { ...options, signal: controller.signal })
+          .then((response) => {
+            clearTimeout(timer);
+            resolve(response);
+          })
+          .catch((error) => {
+            clearTimeout(timer);
+            reject(error);
+          });
+      });
+    }
+
+    async function getGalleryData() {
+      const res = await fetchWithTimeout(PHOTOS_TABLE_URL, {
+        method: "GET",
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          Accept: "application/json"
+        },
+        cache: "no-store"
+      }, 10000);
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Could not read gallery data.");
+      }
+
+      if (!res.ok) {
+        throw new Error(data?.message || data?.error || "Could not load gallery.");
+      }
+
+      return data;
+    }
+
     async function loadGallery() {
       galleryStatus.textContent = "Loading gallery...";
       galleryGrid.innerHTML = "";
@@ -456,25 +507,12 @@
       refreshGalleryBtn.disabled = true;
 
       try {
-        const res = await fetch(PHOTOS_TABLE_URL, {
-          method: "GET",
-          headers: {
-            apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-            Accept: "application/json"
-          },
-          cache: "no-store"
-        });
-
         let data;
-        try {
-          data = await res.json();
-        } catch {
-          throw new Error("Could not read gallery data.");
-        }
 
-        if (!res.ok) {
-          throw new Error(data?.message || data?.error || "Could not load gallery.");
+        try {
+          data = await getGalleryData();
+        } catch (firstError) {
+          data = await getGalleryData();
         }
 
         if (!Array.isArray(data) || data.length === 0) {
