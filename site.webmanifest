@@ -1,0 +1,17 @@
+{
+  "name": "MotoCoach — Track Performance Lab",
+  "short_name": "MotoCoach",
+  "description": "Track-day lap timing and session review",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#080d17",
+  "background_color": "#080d17",
+  "icons": [
+    {
+      "src": "/assets/v2/motocoach-icon.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

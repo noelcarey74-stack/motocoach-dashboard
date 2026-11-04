@@ -1,899 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-IE">
 <head>
-  <meta charset="UTF-8" />
-  <title>MotoCoach – AimotoCoach Track Day Data & Coaching</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="MotoCoach is an AI-powered track day data and coaching app. Lap timing, on-board video + GPS and setup advice for bikes, cars and karts – straight from your iPhone, without a €2,000 data system." />
-
-  <style>
-    :root {
-      --bg-dark: #050910;
-      --bg-hero: radial-gradient(circle at top left, #171f35 0, #050910 55%, #050910 100%);
-      --card-bg: rgba(8, 15, 28, 0.96);
-      --accent: #ff3546;
-      --accent-soft: rgba(255, 53, 70, 0.18);
-      --accent-light: #ff6a76;
-      --text-main: #f8fbff;
-      --text-muted: #a4b0c6;
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --pill-bg: rgba(13, 24, 45, 0.95);
-      --pill-border: rgba(255, 255, 255, 0.12);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      color: var(--text-main);
-      background: var(--bg-dark);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* Layout */
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .wrapper {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(5,9,16,0.92) 0%, rgba(5,9,16,0.86) 70%, transparent 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      gap: 18px;
-      flex-wrap: wrap; /* allow wrapping on smaller screens */
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #b80010;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-
-    .logo-text span:first-child {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-    }
-
-    .logo-text span:last-child {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .nav-links a {
-      padding-bottom: 2px;
-      border-bottom: 1px solid transparent;
-    }
-
-    .nav-links a:hover {
-      color: var(--text-main);
-      border-bottom-color: rgba(255,255,255,0.35);
-    }
-
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--pill-bg);
-      border: 1px solid var(--pill-border);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .btn-appstore {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: none;
-      background: radial-gradient(circle at top left, #23ff95 0, #16bb66 45%, #0a7c3c 100%);
-      color: #02130a;
-      font-size: 0.9rem;
-      font-weight: 600;
-      box-shadow: 0 12px 30px rgba(10, 112, 66, 0.5);
-    }
-
-    .btn-appstore span {
-      display: block;
-      line-height: 1.1;
-    }
-
-    .btn-appstore small {
-      font-size: 0.7rem;
-      display: block;
-      opacity: 0.8;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-    }
-
-    .btn-appstore strong {
-      font-size: 0.95rem;
-    }
-
-    .btn-appstore:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-      box-shadow: 0 16px 38px rgba(7, 95, 57, 0.7);
-    }
-
-    /* Hero */
-
-    .hero {
-      background: var(--bg-hero);
-      padding: 48px 0 60px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-      gap: 40px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(20, 33, 60, 0.9);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 12px;
-    }
-
-    .eyebrow span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #18da73;
-      box-shadow: 0 0 6px #18da73;
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 4vw, 3rem);
-      margin: 0 0 10px;
-    }
-
-    .hero-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 520px;
-      line-height: 1.6;
-      margin-bottom: 22px;
-    }
-
-    .hero-cols {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px 22px;
-      align-items: center;
-      margin-bottom: 22px;
-    }
-
-    .hero-note {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      max-width: 360px;
-      line-height: 1.5;
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-      font-size: 0.8rem;
-    }
-
-    .badge-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(8, 16, 32, 0.9);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--text-muted);
-    }
-
-    .hero-secondary {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 10px;
-    }
-
-    .device-card {
-      background: radial-gradient(circle at top, rgba(255,255,255,0.08) 0, rgba(5,9,16,0.85) 55%, rgba(5,9,16,0.98) 100%);
-      border-radius: 32px;
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 26px 24px 24px;
-      box-shadow: 0 26px 50px rgba(0,0,0,0.7);
-      max-width: 380px;
-      margin-left: auto;
-    }
-
-    .device-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .device-chip {
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.12);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .device-body {
-      display: grid;
-      grid-template-columns: 96px 1fr;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .device-icon {
-      width: 96px;
-      height: 96px;
-      border-radius: 26px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.9);
-      background: #b4000f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .device-icon img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    .device-text h2 {
-      margin: 0 0 4px;
-      font-size: 1.3rem;
-    }
-
-    .device-text p {
-      margin: 0;
-      font-size: 0.86rem;
-      color: var(--text-muted);
-    }
-
-    .device-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .device-tags span {
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(8,16,32,0.9);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: var(--text-muted);
-    }
-
-    .device-footer {
-      margin-top: 18px;
-      padding-top: 12px;
-      border-top: 1px dashed rgba(255,255,255,0.12);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .chip-hot {
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: var(--accent-soft);
-      color: var(--accent-light);
-      border: 1px solid rgba(255, 98, 116, 0.8);
-    }
-
-    /* Sections */
-
-    section {
-      padding: 56px 0;
-      background: radial-gradient(circle at top, #10172b 0, #050910 55%, #050910 100%);
-      border-top: 1px solid rgba(255,255,255,0.03);
-    }
-
-    section:nth-of-type(even) {
-      background: #050910;
-    }
-
-    .section-header {
-      margin-bottom: 26px;
-      text-align: left;
-    }
-
-    .section-header h2 {
-      margin: 0 0 6px;
-      font-size: 1.6rem;
-    }
-
-    .section-header p {
-      margin: 0;
-      font-size: 0.96rem;
-      color: var(--text-muted);
-      max-width: 620px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .feature-card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 16px 16px 18px;
-      border: 1px solid var(--border-subtle);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.88rem;
-    }
-
-    .feature-card h3 {
-      margin: 0;
-      font-size: 0.98rem;
-    }
-
-    .feature-card p {
-      margin: 0;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .feature-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      margin-bottom: 2px;
-    }
-
-    .feature-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .feature-pill-row span {
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(10, 18, 34, 0.95);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--text-muted);
-    }
-
-    .pricing-card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 20px 20px 22px;
-      border: 1px solid var(--border-subtle);
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2.2fr);
-      gap: 22px;
-      align-items: center;
-    }
-
-    .pricing-main h3 {
-      margin: 0 0 4px;
-      font-size: 1.2rem;
-    }
-
-    .pricing-main p {
-      margin: 0;
-      font-size: 0.94rem;
-      color: var(--text-muted);
-      max-width: 480px;
-    }
-
-    .pricing-meta {
-      margin-top: 10px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .pricing-meta strong {
-      color: var(--accent-light);
-    }
-
-    .pricing-details {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-    }
-
-    .pricing-details ul {
-      margin: 8px 0 0 18px;
-      padding: 0;
-    }
-
-    .pricing-details li {
-      margin-bottom: 4px;
-    }
-
-    .fine-print {
-      margin-top: 8px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      opacity: 0.9;
-    }
-
-    footer {
-      padding: 28px 0 34px;
-      background: #03060c;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-    }
-
-    .footer-links a:hover {
-      color: var(--text-main);
-    }
-
-    /* Responsive */
-
-    @media (max-width: 880px) {
-      .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .device-card {
-        margin: 10px auto 0;
-      }
-
-      .nav {
-        padding: 10px 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .nav-links {
-        display: flex;          /* keep links visible */
-        flex-wrap: wrap;
-        gap: 12px;
-        font-size: 0.85rem;
-      }
-
-      .nav-cta {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      section {
-        padding: 42px 0;
-      }
-
-      .pricing-card {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 720px) {
-      .feature-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 520px) {
-      .device-body {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .device-icon {
-        margin: 0 auto;
-      }
-      .device-text {
-        text-align: center;
-      }
-      .hero-cols {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080e18">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="MotoCoach is a track-day companion for motorcyclists, car drivers and kart racers. Explore lap timing, pit-wall timing, video + GPS, race insights and setup notes in our MotoCoach 2.0 preview.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-video-preview:-1">
+  <meta name="author" content="Carey Web Services">
+  <link rel="canonical" href="https://aimotocoach.com/">
+  <link rel="icon" type="image/webp" href="/assets/v2/motocoach-icon.webp">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" as="image" href="/assets/v2/01_Track_Dashboard.webp" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/v2/site.css">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MotoCoach">
+  <meta property="og:locale" content="en_IE">
+  <meta property="og:title" content="MotoCoach — Chase the Perfect Lap">
+  <meta property="og:description" content="Track-day tools for riders, drivers and pit crews. Watch the 60-second MotoCoach 2.0 tour and explore the redesigned app.">
+  <meta property="og:url" content="https://aimotocoach.com/">
+  <meta property="og:image" content="https://aimotocoach.com/assets/v2/motocoach-feature.webp">
+  <meta property="og:image:alt" content="MotoCoach track-day racing graphics and app branding">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MotoCoach — Record. Compare. Improve.">
+  <meta name="twitter:description" content="Discover the track-day timing app and the new MotoCoach 2.0 preview.">
+  <meta name="twitter:image" content="https://aimotocoach.com/assets/v2/motocoach-feature.webp">
+  <title>MotoCoach — GPS Lap Timing, Pit-Wall Timer & Track-Day App</title>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"Organization","@id":"https://aimotocoach.com/#organization","name":"Carey Web Services","url":"https://aimotocoach.com/","email":"careywebservicesireland@gmail.com"},
+      {"@type":"WebSite","@id":"https://aimotocoach.com/#website","url":"https://aimotocoach.com/","name":"MotoCoach","publisher":{"@id":"https://aimotocoach.com/#organization"},"inLanguage":"en-IE"},
+      {"@type":"SoftwareApplication","@id":"https://aimotocoach.com/#app","name":"MotoCoach","description":"Track-day lap timing, video and GPS session tools, lap history and setup notes for motorcycles, cars and karts.","applicationCategory":"SportsApplication","operatingSystem":"iOS","url":"https://aimotocoach.com/","downloadUrl":"https://apps.apple.com/ie/app/aimotorbikecoach/id6755649378","publisher":{"@id":"https://aimotocoach.com/#organization"},"image":"https://aimotocoach.com/assets/v2/motocoach-icon.webp"},
+      {"@type":"VideoObject","@id":"https://aimotocoach.com/#tour","name":"MotoCoach 2.0 — 60-second trackside introduction","description":"Narrated MotoCoach 2.0 preview featuring the pit-wall lap timer, video and GPS concept, racing insights and garage notes. Includes illustrative motorsport visuals and sample app data.","thumbnailUrl":"https://aimotocoach.com/assets/v2/motocoach-video-poster.webp","contentUrl":"https://aimotocoach.com/assets/v2/motocoach-2-trackside-60s.mp4","uploadDate":"2026-11-04","duration":"PT1M","inLanguage":"en-IE"}
+    ]
+  }
+  </script>
 </head>
 <body>
-<div class="page">
-
-  <!-- NAVBAR -->
-  <header>
-    <div class="wrapper">
-      <div class="nav">
-        <div class="nav-left">
-          <div class="logo-icon">
-            <!-- Your app icon in the repo root as app-icon.png -->
-            <img src="app-icon.png" alt="MotoCoach app icon" />
-          </div>
-          <div class="logo-text">
-            <span>MotoCoach</span>
-            <span>Track Day Data &amp; Coaching</span>
-          </div>
-        </div>
-
-        <nav class="nav-links">
-          <a href="#why">Why MotoCoach</a>
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#who-for">Who it’s for</a>
-          <a href="support.html">Support</a>
-          <a href="faq.html">FAQ – Bikes, Cars & Karts</a>
-        </nav>
-
-        <div class="nav-cta">
-          <div class="pill">iOS • Bikes • Cars • Karts</div>
-          <a class="btn-appstore" href="https://apps.apple.com/app/aimotorbikecoach/id6755649378" target="_blank" rel="noopener noreferrer">
-            <span>
-              <small>Download on the</small>
-              <strong>App Store</strong>
-            </span>
-          </a>
-        </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell" id="top">
+    <header class="site-header">
+      <div class="nav-inner container">
+        <a class="brand" href="/" aria-label="MotoCoach home"><img src="/assets/v2/motocoach-icon.webp" width="42" height="42" alt=""><span><strong>MOTOCOACH</strong><small>TRACK PERFORMANCE LAB</small></span></a>
+        <nav class="desktop-nav" aria-label="Main navigation"><a href="#features">Features</a><a href="#video">Watch the film</a><a href="#screenshots">App preview</a><a href="#pitwall">Pit wall</a><a href="#questions">FAQ</a></nav>
+        <div class="nav-actions"><a class="small-cta" href="https://apps.apple.com/ie/app/aimotorbikecoach/id6755649378" target="_blank" rel="noopener noreferrer">iPhone app <span aria-hidden="true">↗</span></a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button></div>
       </div>
-    </div>
-  </header>
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" hidden><a href="#features">Features</a><a href="#video">Watch the film</a><a href="#screenshots">App preview</a><a href="#pitwall">Pit wall</a><a href="#questions">FAQ</a><a href="#download">Get MotoCoach</a></nav>
+    </header>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="wrapper">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">
-            <span class="dot"></span>
-            <span>New • AI track-day coach for riders &amp; drivers</span>
+    <main id="main">
+      <section class="hero section-pad" aria-labelledby="hero-title">
+        <div class="hero-grid container">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="live-dot"></span> THE TRACK DAY PERFORMANCE LAB <span class="eyebrow-line"></span> 2.0 PREVIEW</div>
+            <h1 id="hero-title">CHASE<br>THE <em>PERFECT</em><br>LAP<span class="full-stop">.</span></h1>
+            <p class="hero-lead">Your track day. Your data. One smarter place to <strong>record, compare and improve.</strong></p>
+            <p class="hero-sub">For motorcycles, cars, karts—and the mechanics and friends timing laps from the pit wall. Discover the next generation of MotoCoach.</p>
+            <div class="hero-buttons"><a class="button button-lime" href="#video"><span class="play-mark">▶</span> WATCH THE 60-SECOND TOUR</a><a class="button button-outline" href="#screenshots">EXPLORE THE NEW APP <span aria-hidden="true">↗</span></a></div>
+            <div class="availability"><span class="availability-pill"><span class="green-mini"></span> iPhone app available</span><span class="availability-pill muted-pill">Android 2.0 • testing preparation</span></div>
+            <div class="hero-index"><span>01 / 04</span><span class="hero-index-line"></span><span>BUILT FOR THE PADDOCK</span></div>
           </div>
-          <h1>Smarter track-day data without a €2,000 system.</h1>
-          <p class="hero-subtitle">
-            MotoCoach combines lap timing, on-board video + GPS and AI setup advice so you can focus on riding or driving while your iPhone handles the data and coaching.
-          </p>
-
-          <div class="hero-cols">
-            <a class="btn-appstore" href="https://apps.apple.com/app/aimotorbikecoach/id6755649378" target="_blank" rel="noopener noreferrer">
-              <span>
-                <small>Get MotoCoach on</small>
-                <strong>App Store</strong>
-              </span>
-            </a>
-
-            <div class="hero-note">
-              Designed for real track days, not just demos.
-              <div class="badges">
-                <span class="badge-pill">Lap timer &amp; session log</span>
-                <span class="badge-pill">On-board video + GPS</span>
-                <span class="badge-pill">AI setup &amp; coaching</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-secondary">
-            Works for bikes, cars and karts. As long as you’ve got an iPhone, you’re ready to go.
+          <div class="hero-visual">
+            <div class="hero-grid-background" aria-hidden="true"></div>
+            <svg class="circuit-hero" viewBox="0 0 520 430" fill="none" role="img" aria-label="Illustrative technical race circuit outline"><path d="M127 99 C157 73 191 78 211 87 L260 45 Q300 28 331 58 L359 99 Q378 128 351 154 L316 175 L361 198 Q404 222 383 256 L360 283 Q350 300 319 292 L271 274 L249 312 Q236 330 207 326 L164 313 Q135 306 128 274 L143 239 L107 229 Q67 210 89 174 L116 153 L93 130 Z" stroke="#b7f269" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M127 99 C157 73 191 78 211 87 L260 45 Q300 28 331 58 L359 99 Q378 128 351 154 L316 175 L361 198 Q404 222 383 256 L360 283 Q350 300 319 292 L271 274 L249 312 Q236 330 207 326 L164 313 Q135 306 128 274 L143 239 L107 229 Q67 210 89 174 L116 153 L93 130 Z" stroke="#b7f269" stroke-opacity=".18" stroke-width="22"/><path d="M89 172 L115 180" stroke="white" stroke-width="4"/><path d="M91 180 L117 188" stroke="white" stroke-width="4"/><circle cx="268" cy="274" r="7" fill="#ff6669" stroke="#0a1220" stroke-width="5"/></svg>
+            <div class="phone-halo"></div>
+            <div class="phone-shot"><img src="/assets/v2/01_Track_Dashboard.webp" width="1080" height="1920" alt="MotoCoach 2.0 app preview showing Chase the Perfect Lap and a technical race-circuit graphic" fetchpriority="high"></div>
+            <div class="floating-panel float-a"><span class="panel-label">PIT WALL READY</span><strong>MANUAL LAP TIMER</strong><span class="panel-mini">Crew-friendly controls</span></div>
+            <div class="floating-panel float-b"><span class="panel-label">THE NEXT SESSION</span><strong>STARTS HERE <span>↗</span></strong></div>
+            <div class="hero-visual-caption">02 / TRACK LAB <span>DEVELOPMENT PREVIEW</span></div>
           </div>
         </div>
+      </section>
 
-        <aside>
-          <div class="device-card">
-            <div class="device-header">
-              <span>Today at the track</span>
-              <span class="device-chip">
-                <span style="width:7px;height:7px;border-radius:50%;background:#18da73;box-shadow:0 0 6px #18da73;"></span>
-                <span>AI coach online</span>
-              </span>
-            </div>
-            <div class="device-body">
-              <div class="device-icon">
-                <img src="app-icon.png" alt="MotoCoach icon" />
-              </div>
-              <div class="device-text">
-                <h2>MotoCoach</h2>
-                <p>Pick your machine, pace and conditions. Get a plan for your first 3 sessions plus setup notes.</p>
-                <div class="device-tags">
-                  <span>Lap Timer</span>
-                  <span>Video + GPS</span>
-                  <span>Suspension</span>
-                  <span>Tyres &amp; grip</span>
-                </div>
-              </div>
-            </div>
-            <div class="device-footer">
-              <span class="chip-hot">7-day free trial</span>
-              <span>Then one simple monthly price via Apple. Cancel anytime in your Apple ID settings.</span>
-            </div>
+      <div class="track-strip" aria-label="MotoCoach core tools"><div class="track-strip-inner"><span>TRACK DAY INTELLIGENCE</span><span class="cross">✳</span><span>GPS LAP TIMING</span><span class="cross">✳</span><span>VIDEO + GPS</span><span class="cross">✳</span><span>PIT-WALL TIMER</span><span class="cross">✳</span><span>SETUP & TYRE NOTES</span><span class="cross">✳</span><span>RECORD. COMPARE. IMPROVE.</span></div></div>
+
+      <section class="section-pad features-section" id="features" aria-labelledby="features-title">
+        <div class="container">
+          <div class="section-header"><div><span class="eyebrow eyebrow-plain"><span class="section-number">01</span> MADE FOR REAL TRACK DAYS</span><h2 id="features-title">EVERY TOOL.<br><em>ONE GARAGE.</em></h2></div><p>Stop juggling notes, stopwatches and separate apps. MotoCoach brings track-day information together, with the rider's focus where it belongs: on the circuit.</p></div>
+          <div class="feature-grid">
+            <article class="feature-card feature-spotlight"><span class="feature-counter">01 / TIMING</span><span class="feature-icon">⌁</span><h3>Auto lap & GPS</h3><p>Record a track session with GPS speed and lap information. Review times and saved sessions after your run.</p><div class="feature-tag">ON-TRACK TOOLS</div></article>
+            <article class="feature-card"><span class="feature-counter">02 / CREW</span><span class="feature-icon">◷</span><h3>Pit-wall lap timer</h3><p>A separate, large-control stopwatch for mechanics, helpers or friends recording every completed lap.</p><div class="feature-tag">NO LAP HARDWARE REQUIRED</div></article>
+            <article class="feature-card"><span class="feature-counter">03 / CAPTURE</span><span class="feature-icon">▣</span><h3>Video + GPS</h3><p>Bring video together with recorded GPS and timing information, then review the session off track.</p><div class="feature-tag">DEVICE SUPPORT VARIES</div></article>
+            <article class="feature-card"><span class="feature-counter">04 / REVIEW</span><span class="feature-icon">⌁</span><h3>Race intelligence</h3><p>See best, average and consistency from recorded laps. No imaginary braking points or invented lean-angle data.</p><div class="feature-tag">HONEST DATA, CLEAR CONTEXT</div></article>
+            <article class="feature-card"><span class="feature-counter">05 / SETUP</span><span class="feature-icon">⚙</span><h3>My Garage</h3><p>Keep track of tyres, pressures, vehicle, circuit and setup notes, ready for your next session.</p><div class="feature-tag">YOUR PADDOCK NOTEBOOK</div></article>
+            <article class="feature-card"><span class="feature-counter">06 / LEARNING</span><span class="feature-icon">✦</span><h3>Coaching notebook</h3><p>Review straightforward lap-time feedback and suggestions for what to measure next. Advanced AI coaching is still being developed.</p><div class="feature-tag">2.0 DEVELOPMENT PREVIEW</div></article>
           </div>
-        </aside>
-      </div>
-    </div>
+        </div>
+      </section>
+
+      <section class="film-section section-pad" id="video" aria-labelledby="film-title">
+        <div class="container film-grid">
+          <div class="film-copy"><span class="eyebrow eyebrow-plain"><span class="section-number">02</span> THE 60-SECOND INTRODUCTION</span><h2 id="film-title">WELCOME<br>TO THE <em>PIT WALL.</em></h2><p>One minute. The feeling of a track day. And a look at how MotoCoach can help riders, drivers and the people supporting them.</p>
+            <div class="film-timeline"><div><b>00:11</b><span>Timing from the pit wall</span></div><div><b>00:20</b><span>Onboard video & GPS preview</span></div><div><b>00:30</b><span>Lap analysis & consistency</span></div><div><b>00:40</b><span>Vehicle and tyre setup notes</span></div></div>
+            <p class="film-disclaimer"><span class="disclaimer-mark">i</span> The film includes illustrative motorsport scenes and clearly labelled demonstration app data; they are not recordings from a customer's track session.</p>
+          </div>
+          <div class="film-frame"><div class="film-topline"><span>THE MOTOCOACH FILM</span><span>01:00 <span class="red-dot"></span> SOUND ON</span></div>
+            <video class="tour-video" controls playsinline preload="metadata" poster="/assets/v2/motocoach-video-poster.webp" width="720" height="1280" aria-label="Watch the MotoCoach 2.0 60-second narrated trackside introduction"><source src="/assets/v2/motocoach-2-trackside-60s.mp4" type="video/mp4">Your browser cannot play this video. <a href="/assets/v2/motocoach-2-trackside-60s.mp4">Open the MotoCoach video</a>.</video>
+            <div class="film-bottomline"><span>TRACKSIDE EDITION • 2026</span><span>RECORD. COMPARE. IMPROVE.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section section-pad" id="screenshots" aria-labelledby="gallery-title">
+        <div class="container"><div class="section-header gallery-header"><div><span class="eyebrow eyebrow-plain"><span class="section-number">03</span> INSIDE THE APP</span><h2 id="gallery-title">THE NEW<br><em>MOTOCOACH 2.0.</em></h2></div><p>The redesigned Android 2.0 interface—real app screens from the development build, including sample-labelled race analysis.</p></div>
+          <div class="gallery-grid">
+            <button class="shot-card" type="button" data-lightbox="0" aria-label="Enlarge Track dashboard screenshot"><span class="shot-top"><b>01</b><span>TRACK DASHBOARD</span><span>↗</span></span><img src="/assets/v2/01_Track_Dashboard.webp" loading="lazy" width="1080" height="1920" alt="MotoCoach 2.0 home dashboard with racing circuit illustration"><span class="shot-bottom">Start every session with purpose</span></button>
+            <button class="shot-card" type="button" data-lightbox="1" aria-label="Enlarge Pit-wall lap timer screenshot"><span class="shot-top"><b>02</b><span>PIT WALL</span><span>↗</span></span><img src="/assets/v2/02_Pit_Wall_Lap_Timer.webp" loading="lazy" width="1080" height="1920" alt="Manual lap timer with start button and track session fields"><span class="shot-bottom">Clear, simple lap timing for your crew</span></button>
+            <button class="shot-card" type="button" data-lightbox="2" aria-label="Enlarge Race intelligence screenshot"><span class="shot-top"><b>03</b><span>RACE INTELLIGENCE</span><span>↗</span></span><img src="/assets/v2/03_Race_Intelligence_Demo.webp" loading="lazy" width="1080" height="1920" alt="Sample-data race intelligence screen with best lap and lap-time chart"><span class="shot-bottom">Lap data that tells a useful story</span></button>
+            <button class="shot-card" type="button" data-lightbox="3" aria-label="Enlarge Garage setup screenshot"><span class="shot-top"><b>04</b><span>MY GARAGE</span><span>↗</span></span><img src="/assets/v2/04_Garage_Setup.webp" loading="lazy" width="1080" height="1920" alt="Garage form for vehicle, track, tyres and front and rear pressures"><span class="shot-bottom">Remember the setup that worked</span></button>
+            <button class="shot-card" type="button" data-lightbox="4" aria-label="Enlarge Welcome tour screenshot"><span class="shot-top"><b>05</b><span>WELCOME TOUR</span><span>↗</span></span><img src="/assets/v2/05_Trackside_Welcome.webp" loading="lazy" width="1080" height="1920" alt="MotoCoach narrated welcome tour on the app screen"><span class="shot-bottom">See how everything works</span></button>
+            <button class="shot-card" type="button" data-lightbox="5" aria-label="Enlarge Coach notebook screenshot"><span class="shot-top"><b>06</b><span>COACH'S NOTEBOOK</span><span>↗</span></span><img src="/assets/v2/06_Coach_Debrief_Demo.webp" loading="lazy" width="1080" height="1920" alt="Sample lap performance chart and coach notebook insights"><span class="shot-bottom">Make sense of your recorded laps</span></button>
+          </div>
+          <div class="gallery-note"><span class="note-dot"></span> ANDROID 2.0 DEVELOPMENT PREVIEW <span>•</span> DEMONSTRATION DATA IS MARKED <span>•</span> TAP ANY SCREEN TO ENLARGE</div>
+        </div>
+      </section>
+
+      <section class="pit-section section-pad" id="pitwall" aria-labelledby="pit-title"><div class="container pit-grid"><div class="pit-image"><span class="image-kicker">FOR THE PEOPLE BEHIND THE RIDER</span><img src="/assets/v2/02_Pit_Wall_Lap_Timer.webp" width="1080" height="1920" loading="lazy" alt="MotoCoach manual lap timer interface showing large stopwatch buttons"><div class="time-float"><span>SESSION TIMING</span><strong>00:00.00</strong><small>ONE TAP AT THE LINE.</small></div></div><div class="pit-copy"><span class="eyebrow eyebrow-plain"><span class="section-number">04</span> THE PIT CREW MATTERS</span><h2 id="pit-title">NOT JUST<br>FOR THE <em>RIDER.</em></h2><p>When you're on track, the last thing you need is a screen in your hands. Let a mate, mechanic or someone on the pit wall handle the stopwatch.</p><div class="pit-points"><div><span>01</span><div><strong>Big, readable controls</strong><p>Start timing, record completed laps and add session notes without a complicated setup.</p></div></div><div><span>02</span><div><strong>Remember each session</strong><p>Keep track names, lap history and relevant context together.</p></div></div><div><span>03</span><div><strong>Review when you come in</strong><p>Talk through the times and setup changes with your crew between sessions.</p></div></div></div><a class="underlined-link" href="#screenshots">See the lap timer screen <span>↗</span></a></div></div></section>
+
+      <section class="method-section section-pad" aria-labelledby="method-title"><div class="container"><div class="section-header"><div><span class="eyebrow eyebrow-plain">THE METHOD</span><h2 id="method-title">KEEP IT<br><em>TRACKSIDE SIMPLE.</em></h2></div><p>One aim: help you learn from the day without getting in the way of riding or driving.</p></div><div class="method-grid"><div><span>01 <i></i></span><h3>PREPARE</h3><p>Save the vehicle, track and starting setup before heading out.</p></div><div><span>02 <i></i></span><h3>RECORD</h3><p>Capture your session, or have your pit crew use the manual timer.</p></div><div><span>03 <i></i></span><h3>REVIEW</h3><p>Compare your laps, save what worked and make a considered plan for the next run.</p></div></div><p class="safety">MOTOCOACH IS FOR CLOSED-CIRCUIT USE. SET UP ALL RECORDING BEFORE MOVING. NEVER INTERACT WITH A PHONE WHILE RIDING OR DRIVING. PHONE GPS IS NOT OFFICIAL RACE TIMING.</p></div></section>
+
+      <section class="faq-section section-pad" id="questions" aria-labelledby="faq-title"><div class="container faq-grid"><div><span class="eyebrow eyebrow-plain">QUESTIONS / ANSWERS</span><h2 id="faq-title">GOOD TO<br><em>KNOW.</em></h2><p>Clear answers, before you head to the circuit.</p><a class="underlined-link" href="/faq.html">More frequently asked questions <span>↗</span></a></div><div class="faq-items">
+        <details><summary>Can a mechanic use MotoCoach on the pit wall?<span>+</span></summary><p>Yes. The 2.0 development build includes a separate manual stopwatch and session fields designed for pit-wall helpers. It does not require them to be on the motorcycle or in the car.</p></details>
+        <details><summary>Does it work for bikes, cars and karts?<span>+</span></summary><p>The MotoCoach 2.0 design supports a vehicle choice for bikes, cars and karts. The feature set and availability can differ between the currently available iPhone app and the unreleased Android version.</p></details>
+        <details><summary>Is the Android app on Google Play yet?<span>+</span></summary><p>No. MotoCoach 2.0 for Android is being prepared for Google Play testing. The screenshots and video on this page demonstrate that development version, not a live Android store download.</p></details>
+        <details><summary>Is the race analysis real AI telemetry?<span>+</span></summary><p>The 2.0 preview uses recorded lap times to calculate useful summaries; example charts are explicitly marked sample data. It cannot infer lean angle, grip or exact braking points without appropriate sensors. More advanced AI coaching is planned.</p></details>
+        <details><summary>Can I operate the app while riding or driving?<span>+</span></summary><p>No. Mount and configure devices safely while stationary. Never interact with an app while moving, and follow circuit rules and official track-day briefings.</p></details>
+        <details><summary>Do I need an expensive data logger?<span>+</span></summary><p>The phone-based features are designed to work without a separate dedicated timing system. Device GPS and camera quality affect results; a phone does not replace an official timing transponder.</p></details>
+      </div></div></section>
+
+      <section class="final-cta section-pad" id="download"><div class="container final-grid"><div><span class="eyebrow eyebrow-plain"><span class="live-dot"></span> TIME FOR YOUR NEXT LAP</span><h2>THE TRACK<br>IS <em>CALLING.</em></h2><p>Record the session. Compare the data. Make the next one count.</p><div class="cta-actions"><a class="button button-lime" href="https://apps.apple.com/ie/app/aimotorbikecoach/id6755649378" target="_blank" rel="noopener noreferrer">VIEW THE iPHONE APP ↗</a><a class="button button-outline" href="mailto:careywebservicesireland@gmail.com?subject=MotoCoach%202.0%20Android%20testing">ASK ABOUT ANDROID TESTING ↗</a></div><p class="release-fineprint">The iPhone App Store listing is live. The new 2.0 screenshots and tour show a development preview; Android release and paid subscriptions are not yet live.</p></div><div class="final-art" aria-hidden="true"><span>MC / 02</span><strong>RECORD.<br>COMPARE.<br>IMPROVE.</strong><div class="checker"></div></div></div></section>
+    </main>
+    <footer class="footer"><div class="container footer-top"><a class="brand" href="/" aria-label="MotoCoach home"><img src="/assets/v2/motocoach-icon.webp" width="42" height="42" alt=""><span><strong>MOTOCOACH</strong><small>TRACK PERFORMANCE LAB</small></span></a><p>Built for the paddock. Designed to keep your eyes on the track.</p></div><div class="container footer-bottom"><span>© <span id="year">2026</span> MOTOCOACH • DESIGNED BY CAREY WEB SERVICES</span><div><a href="/support.html">Support</a><a href="/faq.html">FAQ</a><a href="/privacy.html">iOS Privacy</a><a href="/privacy-android.html">Android Privacy</a><a href="/terms.html">Terms</a></div></div></footer>
   </div>
-
-  <!-- WHY MOTOCOACH -->
-  <section id="why">
-    <div class="wrapper">
-      <div class="section-header">
-        <h2>Why I built MotoCoach</h2>
-        <p>This isn’t some €2,000 data system. I was sick of trying to get things to work properly, so I made my own.</p>
-      </div>
-
-      <div class="feature-card" style="max-width:720px;margin:0 auto;">
-        <p style="margin-top:0;">
-          Every track day felt the same – different apps, gadgets that didn’t connect, gear that cost a fortune and still didn’t give me what I actually wanted.
-        </p>
-        <p>
-          So I built <strong>MotoCoach</strong>.
-        </p>
-        <p>
-          MotoCoach is just an iPhone app that gives you lap times and GPS without the hassle.
-        </p>
-        <p>
-          <strong>No sensors. No cables. No complicated setup.</strong>
-        </p>
-        <p>
-          It works for <strong>bikes, cars and karts</strong> – anything that moves fast on a circuit. As long as you’ve got an iPhone, you can record your laps, see your data, watch it back as soon as you come in, and share it if you want.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="features">
-    <div class="wrapper">
-      <div class="section-header">
-        <h2>What MotoCoach can do for your track day</h2>
-        <p>Use it as much or as little as you like – from simple lap timing to detailed setup conversations between sessions.</p>
-      </div>
-
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-label">Core tool</div>
-          <h3>Lap Timer</h3>
-          <p>Time your sessions, save lap history, and send key laps to the AI coach for setup suggestions and PDF-style notes.</p>
-          <div class="feature-pill-row">
-            <span>Session log</span>
-            <span>Best lap focus</span>
-            <span>Track-by-track notes</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Beta</div>
-          <h3>On-board Video + GPS</h3>
-          <p>Record on-board video with GPS while Auto Lap tracks your laps. Review lines, throttle and braking with every session.</p>
-          <div class="feature-pill-row">
-            <span>On-board camera</span>
-            <span>Auto laps</span>
-            <span>Data + visuals</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">AI coach</div>
-          <h3>Trackday Planner</h3>
-          <p>Tell MotoCoach your pace, tyres and conditions. Get a plan for your first three sessions so you’re not guessing on lap one.</p>
-          <div class="feature-pill-row">
-            <span>Session goals</span>
-            <span>Safe first laps</span>
-            <span>Progress built-in</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">AI setup</div>
-          <h3>Fork &amp; Shock Advice</h3>
-          <p>Describe corner entry, mid-corner feel and exit grip. MotoCoach suggests clicker changes and ride-height ideas in plain English.</p>
-          <div class="feature-pill-row">
-            <span>Front suspension</span>
-            <span>Rear suspension</span>
-            <span>Gearing &amp; RPM</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Tyres</div>
-          <h3>Pressures &amp; Grip</h3>
-          <p>Get hot and cold pressures based on your tyres, pace and weather, plus first-lap grip advice for new sessions.</p>
-          <div class="feature-pill-row">
-            <span>Tyre pressures</span>
-            <span>Track conditions</span>
-            <span>First laps</span>
-          </div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Mindset</div>
-          <h3>Confidence &amp; Troubleshooting</h3>
-          <p>Work through nerves, crashes, group speed and “something feels off” days with a calm, structured AI coach.</p>
-          <div class="feature-pill-row">
-            <span>Confidence</span>
-            <span>Cornering lines</span>
-            <span>Problem solving</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing">
-    <div class="wrapper">
-      <div class="section-header">
-        <h2>Simple subscription via Apple</h2>
-        <p>Try everything for a week, then keep MotoCoach running for the price of a couple of coffees each month.</p>
-      </div>
-
-      <div class="pricing-card">
-        <div class="pricing-main">
-          <h3>7-day free trial, then one monthly price.</h3>
-          <p>Payment and subscriptions are handled securely by Apple via your Apple ID. You can cancel anytime in your Apple ID Subscriptions settings.</p>
-          <div class="pricing-meta">
-            <strong>Lap Timer</strong> and Settings are always free.<br />
-            AI tools and Video+GPS features are unlocked with an active subscription.
-          </div>
-        </div>
-
-        <div class="pricing-details">
-          <ul>
-            <li>7-day free trial for new subscribers.</li>
-            <li>One auto-renewing monthly subscription, billed via Apple.</li>
-            <li>Use MotoCoach on any of your iOS devices signed into the same Apple ID.</li>
-            <li>Turn off auto-renew at any time in your Apple ID Subscriptions settings.</li>
-          </ul>
-          <div class="fine-print">
-            MotoCoach does not create its own user accounts and does not see your full payment details – everything goes through Apple.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHO IT'S FOR -->
-  <section id="who-for">
-    <div class="wrapper">
-      <div class="section-header">
-        <h2>Built for real track-day riders &amp; drivers.</h2>
-        <p>Whether you’re doing your first novice day or pushing for PBs in advanced groups, MotoCoach is there between sessions – not in the way when you’re on track.</p>
-      </div>
-
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>First-time track drivers &amp; riders</h3>
-          <p>Get simple plans for the day, safe first-lap advice and clear goals so you’re not guessing what to work on, whether you’re in leathers or a race suit.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Intermediate &amp; advanced</h3>
-          <p>Use AI-powered setup help between sessions to tweak suspension, gearing and tyres as your pace climbs.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Coached or solo</h3>
-          <p>Already working with an instructor? Use MotoCoach as your notebook, lap log and tyre/suspension memory between days.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="wrapper">
-      <div class="footer-row">
-        <div>© 2025 AimotoCoach • MotoCoach Track Day Coaching App</div>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms</a>
-          <a href="support.html">Support</a>
-          <a href="faq.html">FAQ</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-</div>
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="App screenshot preview" hidden><button class="lightbox-close" aria-label="Close screenshot preview" type="button">×</button><button class="lightbox-prev" type="button" aria-label="Previous screenshot">‹</button><figure><img alt=""><figcaption></figcaption></figure><button class="lightbox-next" type="button" aria-label="Next screenshot">›</button></div>
+  <script src="/assets/v2/site.js" defer></script>
 </body>
 </html>
